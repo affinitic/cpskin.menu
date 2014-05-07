@@ -38,6 +38,7 @@ setup(name='cpskin.menu',
       install_requires=[
           'setuptools',
           'Plone',
+          'cpskin.locales'
           # -*- Extra requirements: -*-
       ],
       entry_points={},
