@@ -1,6 +1,23 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="cpskin.menu">
 
-  <!-- Dependencies -->
+  <five:registerPackage package="." initialize=".initialize" />
+  <i18n:registerTranslations directory="locales" />
+  <include package=".browser"/>
   <include package="cpskin.locales" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="cpskin.menu"
+      directory="profiles/default"
+      description="Installs the cpskin.menu package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <interface interface="cpskin.menu.interfaces.IForthLevelNavigation" />
 
 </configure>

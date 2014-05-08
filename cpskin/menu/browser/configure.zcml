@@ -1,0 +1,21 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="cpskin.menu">
+
+
+  <browser:resourceDirectory
+    name="cpskin.menu.resources"
+    directory="resources"
+    />
+
+  <browser:page
+    for="*"
+    name="multilevel-navigation"
+    class=".navigationview.MultiLevelNavigationView"
+    permission="zope2.View"
+    layer="..interfaces.ICpskinMenuLayer"
+    allowed_interface="..interfaces.IMultiLevelNavigationView"
+    />
+
+</configure>
