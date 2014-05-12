@@ -1,0 +1,28 @@
+.sf-menu ul.navTreeLevel1,
+.sf-menu ul.navTreeLevel2,
+.sf-menu ul.navTreeLevel3
+{
+    position: absolute;
+    width: 100%;
+    border-top:1px solid #999999;
+}
+.sf-menu ul.navTreeLevel1 {
+    background-color: #DDDDDD;
+}
+.sf-menu ul.navTreeLevel2{
+    background-color: #aaaaaa;
+    width: 70%
+}
+.sf-menu ul.direct_access{
+    background-color: #FF0000;
+    position: relative;
+    left: 70%;
+    width: 30%;
+}
+
+.sf-menu .navTreeLevel1 li,
+.sf-menu .navTreeLevel2 li,
+.sf-menu .navTreeLevel3 li
+{
+    display: block;
+}
