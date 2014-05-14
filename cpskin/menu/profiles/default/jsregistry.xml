@@ -11,4 +11,13 @@
                 enabled="True" expression="" inline="False"
                 />
 
+    <javascript id="++resource++cpskin.menu.resources/modernizr.min.js"
+                cacheable="True" compression="safe" cookable="True"
+                enabled="True" expression="" inline="False"
+                />
+
+    <javascript id="++resource++cpskin.menu.resources/detectizr.min.js"
+                cacheable="True" compression="safe" cookable="True"
+                enabled="True" expression="" inline="False"
+                />
 </object>
