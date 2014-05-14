@@ -5,24 +5,65 @@
     position: absolute;
     width: 100%;
     border-top:1px solid #999999;
-}
-.sf-menu ul.navTreeLevel1 {
     background-color: #DDDDDD;
+}
+.sf-menu ul.navTreeLevel1 a{
+    width: 23%;
+}
+.sf-menu ul.direct_access a{
+    width: 100%;
 }
 .sf-menu ul.navTreeLevel2{
     background-color: #aaaaaa;
-    width: 70%
+}
+.sf-menu ul.has_direct_access{
+    width: 75%;
 }
 .sf-menu ul.direct_access{
     background-color: #FF0000;
     position: relative;
-    left: 70%;
-    width: 30%;
+    left: 75%;
+    width: 23%;
+}
+.sf-menu ul.navTreeLevel0 li a{
+    display: inline;
 }
 
-.sf-menu .navTreeLevel1 li,
-.sf-menu .navTreeLevel2 li,
-.sf-menu .navTreeLevel3 li
+.sf-menu ul.navTreeLevel1,
+.sf-menu ul.navTreeLevel2,
+.sf-menu ul.navTreeLevel3{
+    display: none;
+}
+
+.sf-menu .navTreeItemInPath ul.navTreeLevel1{
+    display: inherit;
+}
+
+#portal-globalnav-cpskinmenu-tabs li a,
+#portal-globalnav-cpskinmenu li a {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border-right: 0.1em solid #FFFFFF;
+    display: inline-block;
+    min-width: 6em;
+    padding: 0.5em 1em 1.8em;
+    white-space: normal;
+}
+#portal-globalnav-cpskinmenu .selected a,
+#portal-globalnav-cpskinmenu-tabs .selected a,
+#portal-globalnav-cpskinmenu .navTreeItemInPath > span a
 {
-    display: block;
+    text-decoration:underline;
+}
+#portal-globalnav-cpskinmenu a:hover,
+#portal-globalnav-cpskinmenu-tabs a:hover
+{
+    background: none repeat scroll 0 0 #205C90;
+    color: #FFFFFF;
+}
+#portal-globalnav-cpskinmenu-tabs{
+    margin-bottom: 1px;
+}
+
+#portal-globalnav-cpskinmenu-mobile{
+    display: none;
 }
