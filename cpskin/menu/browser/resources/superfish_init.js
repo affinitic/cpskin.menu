@@ -56,6 +56,16 @@
                                    });
             clone_first_level_menu($menu);
             show_adv_breadcrumb($menu);
+
+            $('#search-btn').prepOverlay(
+                {
+                    subtype: 'ajax',
+                    filter: '#portal-searchbox',
+                    config: {expose:{color:'#00f'}},
+                    cssclass: 'mobile-overlay-search'
+                }
+            );
+
         }
     });
 })(jQuery);

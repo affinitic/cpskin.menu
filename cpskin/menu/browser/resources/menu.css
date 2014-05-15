@@ -68,8 +68,11 @@
     display: none;
 }
 
+#search-btn{
+    display:none;
+}
 
-@media only screen and (max-device-width: 600px) {
+@media screen and (max-width: 600px) {
    #mobnav-btn {
     font-size: 20px;
     font-weight: bold;
@@ -86,5 +89,21 @@
     }
     div#mobile-first-level-wrapper{
         display:none;
+    }
+    #portal-header #search-btn {
+        background: url("++resource++cpskin.menu.resources/search.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+        display: block;
+        float: right;
+        font-size: 1px;
+        height: 32px;
+        width: 32px;
+    }
+    .mobile-overlay-search .searchButton {
+        display: block !important;
+    }
+
+    .mobile-overlay-search .pb-ajax > div{
+        width: 83%;
+        font-size: 170%;
     }
 }
