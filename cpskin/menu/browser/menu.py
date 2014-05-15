@@ -304,6 +304,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
             )
         return menus
 
-    @ram.cache(_render_sections_cachekey)
+#    @ram.cache(_render_sections_cachekey)
     def render(self):
         return self.index()

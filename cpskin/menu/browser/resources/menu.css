@@ -64,6 +64,27 @@
     margin-bottom: 1px;
 }
 
-#portal-globalnav-cpskinmenu-mobile{
+#portal-globalnav-cpskinmenu{
     display: none;
+}
+
+
+@media only screen and (max-device-width: 600px) {
+   #mobnav-btn {
+    font-size: 20px;
+    font-weight: bold;
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    }
+    #portal-globalnav-cpskinmenu-mobile{
+    display:none;
+    }
+    ul.mobile-first-level li{
+        display: block;
+    }
+    div#mobile-first-level-wrapper{
+        display:none;
+    }
 }
