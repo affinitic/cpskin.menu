@@ -27,7 +27,7 @@
 <h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Sections</h5>
 <ul tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
 
-<div id="mobnav-btn">Click Meh!</div>
+<div id="mobnav-btn">Menu de navigation</div>
 <div id="mobile-first-level-wrapper"></div>
 <div id="advanced-breadcrumbs"></div>
 <ul tal:replace="structure python: view.superfish_portal_tabs().get('mobile','')" />

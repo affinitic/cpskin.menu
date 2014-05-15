@@ -87,4 +87,27 @@
     div#mobile-first-level-wrapper{
         display:none;
     }
+    .advb-title{
+        background-color: red;
+        display: inline;
+        margin: 5px;
+        font-size: 0.6em;
+    }
+    .advb-title:after{
+        width: 0;
+        height: 0;
+        border-top: 60px solid transparent;
+        border-bottom: 60px solid transparent;
+        border-left: 60px solid green;
+    }
+    .advb-submenu ul{
+        font-size: 0.6em;
+        margin: 5px;
+   }
+   .submenu{
+       display:none;
+   }
+   #advanced-breadcrumbs div.submenu:last-child{
+       display:block;
+   }
 }
