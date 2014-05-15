@@ -198,8 +198,15 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
                 s.append(menuitem(item, first, last, menu_level))
 
+            menu_id = u""
+            if self.menu_id:
+                if not menu_level:
+                    menu_id = self.menu_id and u" id=\"%s\"" % (self.menu_id) or u""
+#                else:
+#                    menu_id = self.menu_id and u" id=\"%s-level-%s\"" % (self.menu_id, menu_level) or u""
+
             return self._submenu_item % dict(
-                id=self.menu_id and u" id=\"%s\"" % (self.menu_id) or u"",
+                id=menu_id,
                 menuitems=u"".join(s),
                 classname=u"navTreeLevel%d %s" % (
                     menu_level, menu_classnames)
