@@ -77,7 +77,10 @@
     display:none;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 640px) {
+   #portal-logo{
+       display:block;
+   }
    #mobnav-btn {
     display:block;
     font-size: 20px;
@@ -107,19 +110,8 @@
         background-color: #205c90;
         color: #fff;
         display: inline;
-        margin: 5px;
+        padding: 0px 5px;
         position:relative;
-    }
-    .advb-title:after{
-        content: ' ';
-        width: 0;
-        height: 0;
-        border-width: 0.6em 0 0.55em 1em;
-        border-color: transparent transparent transparent #205c90;
-        border-style: solid;
-        display: inline-block;
-        position:absolute;
-        top:0;
     }
     .advb-submenu{
         margin-top: 0.3em;
