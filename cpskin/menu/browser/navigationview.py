@@ -52,14 +52,17 @@ class MultiLevelNavigationView(BrowserView):
             return False
 
     @property
+    def is_enabled(self):
+        context = self._get_real_context()
+        return IForthLevelNavigation.providedBy(context)
+
+    @property
     def can_disable_forth_level(self):
         """ Return True if the forth menu level is enable in this context
         """
         context = self._get_real_context()
         sm = getSecurityManager()
-        if not sm.checkPermission("Portlets: Manage portlets", context):
-            return False
-        return IForthLevelNavigation.providedBy(context)
+        return self.is_enabled and sm.checkPermission("Portlets: Manage portlets", context)
 
     def enable_forth_level(self):
         """ Enable the 4th level navigation """

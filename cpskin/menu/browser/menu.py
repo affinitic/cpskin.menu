@@ -239,6 +239,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
             children = item['children']
 
+
             if self.mobile:
                 direct_access_level = 1
                 forth_menu_level = 2
@@ -269,13 +270,16 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                         menu_level=menu_level + 1,
                         menu_classnames='no_direct_access') or u""
             elif menu_level == forth_menu_level:
-                helper_view = getMultiAdapter((item['item'].getObject(), self.request), name=u'multilevel-navigation')
-                if not helper_view.can_disable_forth_level or 'accès directs' in item['item'].Subject:
+                if 'accès directs' in item['item'].Subject:
                     submenu_render = u""
                 else:
-                    submenu_render = submenu(
-                        children,
-                        menu_level=menu_level + 1) or u""
+                    helper_view = getMultiAdapter((item['item'].getObject(), self.request), name=u'multilevel-navigation')
+                    if helper_view.is_enabled:
+                        submenu_render = submenu(
+                            children,
+                            menu_level=menu_level + 1) or u""
+                    else:
+                        submenu_render = u""
             else:
                 submenu_render = submenu(
                     children,
