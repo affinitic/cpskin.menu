@@ -68,46 +68,87 @@
     display: none;
 }
 
+#search-btn{
+    display:none;
+}
 
-@media only screen and (max-device-width: 600px) {
+#mobnav-btn,
+#portal-globalnav-cpskinmenu-mobile{
+    display:none;
+}
+
+@media screen and (max-width: 600px) {
    #mobnav-btn {
+    display:block;
     font-size: 20px;
     font-weight: bold;
-    background-color: blue;
+    background-color: #205c90;
     color: white;
     padding: 10px;
     cursor: pointer;
-    }
-    #portal-globalnav-cpskinmenu-mobile{
-    display:none;
     }
     ul.mobile-first-level li{
         display: block;
     }
     div#mobile-first-level-wrapper{
         display:none;
+        background-color: #205c90;
+        margin-top: 2px;
+        padding: 0.5em;
+    }
+    div#mobile-first-level-wrapper a{
+        color:#FFF !important;
+    }
+    div#mobile-first-level-wrapper li{
+        margin-bottom: 0.3em;
+        border-bottom: 1px solid #FFF;
     }
     .advb-title{
-        background-color: red;
+        background-color: #205c90;
+        color: #fff;
         display: inline;
         margin: 5px;
-        font-size: 0.6em;
+        position:relative;
     }
     .advb-title:after{
+        content: ' ';
         width: 0;
         height: 0;
-        border-top: 60px solid transparent;
-        border-bottom: 60px solid transparent;
-        border-left: 60px solid green;
+        border-width: 0.6em 0 0.55em 1em;
+        border-color: transparent transparent transparent #205c90;
+        border-style: solid;
+        display: inline-block;
+        position:absolute;
+        top:0;
+    }
+    .advb-submenu{
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
     }
     .advb-submenu ul{
-        font-size: 0.6em;
         margin: 5px;
    }
-   .submenu{
-       display:none;
+   .advb-submenu ul li{
+       margin-right: 1em;
    }
-   #advanced-breadcrumbs div.submenu:last-child{
-       display:block;
-   }
+    #advanced-breadcrumbs li.selected,
+    #advanced-breadcrumbs span.selected{
+        border-bottom: 1px dotted #444;
+    }
+    #portal-header #search-btn {
+        background: url("++resource++cpskin.menu.resources/search.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+        display: block;
+        float: right;
+        font-size: 1px;
+        height: 32px;
+        width: 32px;
+    }
+    .mobile-overlay-search .searchButton {
+        display: block !important;
+    }
+
+    .mobile-overlay-search .pb-ajax > div{
+        width: 83%;
+        font-size: 170%;
+    }
 }
