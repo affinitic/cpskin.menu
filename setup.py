@@ -41,5 +41,10 @@ setup(name='cpskin.menu',
           'cpskin.locales'
           # -*- Extra requirements: -*-
       ],
+      extras_require={
+          'test': [
+              'plone.app.robotframework',
+          ]
+      },
       entry_points={},
 )
