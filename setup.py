@@ -44,12 +44,13 @@ setup(name='cpskin.menu',
       ],
       extras_require={
           'test': [
+              'plone.api',
               'plone.app.robotframework',
+              'plone.app.testing',
           ]
       },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
-      """,
-)
+      """,)
