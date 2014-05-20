@@ -10,6 +10,9 @@ from plone.app.testing import (login,
                                setRoles,
                                TEST_USER_ID)
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
+from zope.interface import alsoProvides
+
+from cpskin.menu.interfaces import IForthLevelNavigation
 
 import cpskin.menu
 
@@ -94,6 +97,8 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             title='Yoyo',
             id='yoyo',
             container=artistes)
+
+        alsoProvides(artistes, IForthLevelNavigation)
 
 
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(

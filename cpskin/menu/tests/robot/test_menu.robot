@@ -11,8 +11,8 @@ Test Teardown  Close all browsers
 
 *** Test cases ***
 
-Scenario: Test menu
-    Given logged as owner
+Test menu
+    Logged as owner
     Page Should Contain Link  LOISIRS
     Click link  LOISIRS
     Page Should Contain Link  Art & Culture
@@ -23,8 +23,14 @@ Scenario: Test menu
     Click link  Tata
     Location Should Contain   tata
 
+Test level1
+    Logged as owner
+    Page Should Contain Link  LOISIRS
+    Click link  LOISIRS
+
+
 
 *** Keywords ***
 
-logged as owner
+Logged as owner
     Log in as site owner
