@@ -10,9 +10,10 @@
 bin/
 build/
 develop-eggs/
+dist/
 downloads/
 eggs/
 fake-eggs/
 parts/
-dist/
+src/
 var/
