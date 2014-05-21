@@ -1,7 +1,4 @@
 <?xml version="1.0"?>
 <object>
-  <!-- HIDE -->
-  <hidden manager="plone.portalheader" skinname="Sunburst Theme">
-    <viewlet name="plone.global_sections" />
-  </hidden>
+  <hidden manager="plone.portalheader" skinname="Sunburst Theme" purge="True" />
 </object>
