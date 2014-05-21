@@ -17,8 +17,6 @@
     function extract_submenu_children($elements, level, createdby){
         var $new_ul = $("<ul class='submenu submenu-level-" + level + "' />");
         $elements.children('li').each(function(index, value){
-            //console.log("id di menu: " +  $element.attr('id'))
-            //console.log("id di voce: " + $(this).attr('id'))
             var $children = $(this).find('> ul');
             var $new_li = $("<li />");
             var li_class = $children.length > 0 ? 'nofollow' : 'follow';
@@ -34,7 +32,7 @@
                    .data('orig_id', $(this).attr('id'));
 
             //if we have link or level is greater than 1 follow the link
-            if(li_class=='follow' || level > 1){
+            if(li_class=='follow' || level > 2){
                 //we don't have children or we are in a level where we should follow the link
                 $new_li.data('follow', $(this).find('span a').attr('href'));
                 $new_li.on('click', function(){
@@ -44,7 +42,8 @@
             else{
                   // we have children and we need to open it in a new level menu
                   $new_li.on('click', function(){
-                      var orig =  $('#'+$(this).data('referto').replace('.', '\\.'));
+                      //var orig =  $('#'+$(this).data('referto').replace('.', '\\.'));
+                      var orig = $('#'+$(this).data('referto').replace( /(:|\.|\[|\])/g, "\\$1" ))
                       //remove all the collapsible siblings: next levels
                       //but let's prevent to remove nextMenu if we select an already opened
                       var orig_id = $(this).data('orig_id');
@@ -144,34 +143,28 @@
     }
 
     $( document ).ready(function() {
-        var $isMobile = Detectizr.device.type == 'mobile';
-        if (!$isMobile){
-            $('ul.sf-menu').superfish();
-        }
-        else{
-            //hide/show the drop down menu
-            var $menu = $('#portal-globalnav-cpskinmenu-mobile');
-            $('#mobnav-btn').on('click',
-                                function(){
-                                   $('#mobile-first-level-wrapper').slideToggle()
-                                                                   .toggleClass('menu-active');
-                                   });
-            //first: create first level menu
-            create_first_level_menu($menu);
-            //second: create breadcrumbs
-            create_breadcrumb($menu);
+        //initialize superfish
+        $('ul.sf-menu').superfish();
 
-            $('#portal-header #portal-searchbox').remove();
-            $('#portal-globalnav-cpskinmenu-tabs').remove();
-            $('#search-btn').prepOverlay(
-                {
-                    subtype: 'ajax',
-                    filter: '#portal-searchbox',
-                    config: {expose:{color:'#00f'}},
-                    cssclass: 'mobile-overlay-search'
-                }
-            );
+        //initialize drop down menu
+        var $menu = $('#portal-globalnav-cpskinmenu-mobile');
+        $('#mobnav-btn').on('click',
+                            function(){
+                               $('#mobile-first-level-wrapper').slideToggle()
+                                                               .toggleClass('menu-active');
+                               });
+        //first: create first level menu
+        create_first_level_menu($menu);
+        //second: create breadcrumbs
+        create_breadcrumb($menu);
 
-        }
+        $('#search-btn').prepOverlay(
+            {
+                subtype: 'ajax',
+                filter: '#portal-searchbox',
+                config: {expose:{color:'#00f'}},
+                cssclass: 'mobile-overlay-search'
+            }
+        );
     });
 })(jQuery);

@@ -64,20 +64,23 @@
     margin-bottom: 1px;
 }
 
-#portal-globalnav-cpskinmenu-mobile{
-    display: none;
-}
-
 #search-btn{
     display:none;
 }
 
 #mobnav-btn,
+#advanced-breadcrumbs,
+#mobile-first-level-wrapper,
 #portal-globalnav-cpskinmenu-mobile{
     display:none;
 }
 
 @media screen and (max-width: 640px) {
+    #advanced-breadcrumbs,
+    #mobile-first-level-wrapper{
+        display:block;
+    }
+    #portal-globalnav-cpskinmenu-tabs,
     #portal-globalnav-cpskinmenu{
         display:none;
     }
@@ -149,8 +152,14 @@
         margin-top: 5px;
         margin-right: 5px;
     }
+    div.mobile-overlay-search{
+        width:100%;
+    }
     .mobile-overlay-search .searchButton {
         display: block !important;
+    }
+    #portal-header #portal-searchbox{
+        display:none;
     }
 
     .mobile-overlay-search .pb-ajax > div{
@@ -160,7 +169,7 @@
     #advanced-breadcrumbs .advb-submenu{
         cursor: pointer;
     }
-    #advanced-breadcrumbs ul:not(.submenu-level-2) .nofollow::after{
+    #advanced-breadcrumbs .nofollow::after{
         content: "»";
     }
 }
