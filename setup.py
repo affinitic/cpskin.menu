@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-version = 0.1
+version = 0.2
 
 from setuptools import setup, find_packages
 
@@ -39,16 +39,18 @@ setup(name='cpskin.menu',
       install_requires=[
           'setuptools',
           'Plone',
+          'plone.api',
           'cpskin.locales'
       ],
       extras_require={
           'test': [
-              'plone.testing',
+              'plone.api',
+              'plone.app.robotframework',
+              'plone.app.testing',
           ]
       },
       entry_points="""
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
-      """,
-)
+      """,)
