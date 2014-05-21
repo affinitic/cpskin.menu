@@ -80,6 +80,7 @@
     #mobile-first-level-wrapper{
         display:block;
     }
+    #portal-globalnav,
     #portal-globalnav-cpskinmenu-tabs,
     #portal-globalnav-cpskinmenu{
         display:none;
