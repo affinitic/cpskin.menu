@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-version = 0.2
+version = 0.1
 
 from setuptools import setup, find_packages
 
@@ -33,14 +33,14 @@ setup(name='cpskin.menu',
       url='https://github.com/imio/',
       license='gpl',
       packages=find_packages(),
-      namespace_packages=['cpskin'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Plone',
           'plone.api',
+          'Plone',
           'cpskin.locales'
+          # -*- Extra requirements: -*-
       ],
       extras_require={
           'test': [
@@ -49,9 +49,5 @@ setup(name='cpskin.menu',
               'plone.app.testing',
           ]
       },
-      entry_points="""
-      # -*- Entry points: -*-
-      [z3c.autoinclude.plugin]
-      target = plone
-      """,
+      entry_points={},
 )
