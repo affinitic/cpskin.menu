@@ -53,4 +53,5 @@ setup(name='cpskin.menu',
       # -*- Entry points: -*-
       [z3c.autoinclude.plugin]
       target = plone
-      """,)
+      """,
+)
