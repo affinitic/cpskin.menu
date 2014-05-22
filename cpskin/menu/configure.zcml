@@ -1,6 +1,29 @@
-<configure xmlns="http://namespaces.zope.org/zope">
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="cpskin">
 
-  <!-- Dependencies -->
+  <five:registerPackage package="." initialize=".initialize" />
+  <include package=".browser"/>
   <include package="cpskin.locales" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="cpskin.menu"
+      directory="profiles/default"
+      description="Installs the cpskin.menu package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <interface interface="cpskin.menu.interfaces.IForthLevelNavigation" />
+
+  <genericsetup:upgradeStep
+      title="Upgrade cpskin.menu from 1000 to 1001"
+      source="1000"
+      destination="1001"
+      handler="cpskin.menu.upgrades.upgrade_1000_to_1001"
+      profile="cpskin.menu:default"/>
 
 </configure>

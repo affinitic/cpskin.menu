@@ -4,11 +4,15 @@ from plone import api
 from plone.testing import z2
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import PloneWithPackageLayer
+from plone.app.testing import applyProfile
 from plone.app.testing import (login,
                                TEST_USER_NAME,
                                setRoles,
                                TEST_USER_ID)
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
+from zope.interface import alsoProvides
+
+from cpskin.menu.interfaces import IForthLevelNavigation
 
 import cpskin.menu
 
@@ -16,9 +20,15 @@ import cpskin.menu
 class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
     """
     plone (portal root)
+    |
     |-- Commune
+    |   `-- Services communaux
+    |       `-- Finances
+    |
     `-- Loisirs
         |-- Tourisme
+        |   `-- Promenades
+        |
         `-- Art & Culture
             |-- Bibliothèques
             `-- Artistes
@@ -27,23 +37,41 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
     """
 
     def setUpPloneSite(self, portal):
+        applyProfile(portal, 'cpskin.menu:default')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
-        api.content.create(
+        commune = api.content.create(
             type='Folder',
             title='COMMUNE',
             id='commune',
             container=portal)
+        services_communaux = api.content.create(
+            type='Folder',
+            title='Services communaux',
+            id='services_communaux',
+            container=commune)
+        api.content.create(
+            type='Folder',
+            title='Finances',
+            id='finances',
+            container=services_communaux)
+
         loisirs = api.content.create(
             type='Folder',
             title='LOISIRS',
             id='loisirs',
             container=portal)
-        api.content.create(
+        tourisme = api.content.create(
             type='Folder',
             title='Tourisme',
             id='tourisme',
             container=loisirs)
+        api.content.create(
+            type='Folder',
+            title='Promenades',
+            id='promenades',
+            container=tourisme)
+
         art_et_culture = api.content.create(
             type='Folder',
             title='Art & Culture',
@@ -69,6 +97,8 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             title='Yoyo',
             id='yoyo',
             container=artistes)
+
+        alsoProvides(artistes, IForthLevelNavigation)
 
 
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(

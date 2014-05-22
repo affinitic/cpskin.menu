@@ -1,0 +1,21 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    i18n:domain="cpskin.menu"
+    tal:omit-tag="">
+
+<h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Sections</h5>
+<ul tal:condition="not:view/is_homepage"
+    tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
+
+<a href="#" id="search-btn">
+    Search
+</a>
+<div id="mobnav-btn">Menu de navigation</div>
+<div id="mobile-first-level-wrapper"></div>
+<div id="advanced-breadcrumbs"></div>
+<ul tal:replace="structure python: view.superfish_portal_tabs().get('mobile','')" />
+<div class="visualClear"><!-- --></div>
+
+</html>
