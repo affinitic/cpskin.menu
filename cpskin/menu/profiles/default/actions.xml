@@ -9,8 +9,6 @@
       name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/enable_forth_level</property>
    <property name="link_target"></property>
    <property
-      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/add.png</property>
-   <property
       name="available_expr">context/multilevel-navigation/can_enable_forth_level</property>
    <property name="permissions"/>
    <property name="visible">True</property>
@@ -21,8 +19,6 @@
    <property
       name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/disable_forth_level</property>
    <property name="link_target"></property>
-   <property
-      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/remove.png</property>
    <property
       name="available_expr">context/multilevel-navigation/can_disable_forth_level</property>
    <property name="permissions"/>
