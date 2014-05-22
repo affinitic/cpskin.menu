@@ -17,6 +17,14 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="cpskin.menu: uninstall"
+      directory="profiles/uninstall"
+      description="Uninstalls the cpskin.menu package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
   <interface interface="cpskin.menu.interfaces.IForthLevelNavigation" />
 
   <genericsetup:upgradeStep
