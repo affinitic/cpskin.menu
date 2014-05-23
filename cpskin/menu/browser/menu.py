@@ -237,8 +237,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                 direct_access = []
                 normal_children = []
                 for child in children:
-                    if not IDirectAccess.providedBy(child['item'].getObject()):
-                        normal_children.append(child)
+                    normal_children.append(child)
                 for element in direct_access_catalog:
                     direct_access.append({'item': element,
                                           'depth': 1,

@@ -7,26 +7,20 @@
     border-top:1px solid #999999;
     background-color: #DDDDDD;
 }
-.sf-menu ul.navTreeLevel1 a{
-    width: 23%;
-}
-.sf-menu ul.direct_access a{
-    width: 100%;
-}
-.sf-menu ul.navTreeLevel2{
-    background-color: #aaaaaa;
-}
-.sf-menu ul.has_direct_access{
-    width: 75%;
-}
+
 .sf-menu ul.direct_access{
-    background-color: #FF0000;
-    position: relative;
+    float: right;
     left: 75%;
-    width: 23%;
+    width: 25%;
 }
-.sf-menu ul.navTreeLevel0 li a{
+
+ul.navTreeLevel0 li a{
     display: inline;
+}
+
+ul.navTreeLevel0{
+    background-color: #DDDDDD;
+    margin-bottom: 1em;
 }
 
 .sf-menu ul.navTreeLevel1,
@@ -41,11 +35,10 @@
 
 #portal-globalnav-cpskinmenu-tabs li a,
 #portal-globalnav-cpskinmenu li a {
-    background: none repeat scroll 0 0 #DDDDDD;
     border-right: 0.1em solid #FFFFFF;
     display: inline-block;
     min-width: 6em;
-    padding: 0.5em 1em 1.8em;
+    padding: 0.5em 1em 1.7em;
     white-space: normal;
 }
 #portal-globalnav-cpskinmenu .selected a,
