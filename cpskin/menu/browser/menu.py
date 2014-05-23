@@ -103,11 +103,11 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
         self.navigation_root_path = '/'.join(context.getPhysicalPath()[:3])
         self.mobile_navigation_root_path = portal_state.navigation_root_path()
 
-    def _build_navtree(self, navigation_root):
+    def _build_navtree(self, navigation_root, depth):
         # we generate our navigation out of the sitemap. so we can use the
         # highspeed navtree generation, and use it's caching features too.
         query = CpskinMenuQueryBuilder(self.context)()
-        query['path']['depth'] = self.menu_depth
+        query['path']['depth'] = depth
         query['path']['query'] = navigation_root
 
         # no special strategy needed, so i kicked the INavtreeStrategy lookup.
@@ -116,8 +116,11 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
     def update(self):
         super(CpskinMenuViewlet, self).update()
-        self.data_desktop = self._build_navtree(self.navigation_root_path)
-        self.data_mobile = self._build_navtree(self.mobile_navigation_root_path)
+        # Why different depth in desktop and mobile?
+        self.data_desktop = self._build_navtree(self.navigation_root_path,
+                                                depth=self.menu_depth - 1)
+        self.data_mobile = self._build_navtree(self.mobile_navigation_root_path,
+                                               depth=self.menu_depth)
 
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData(self.data_desktop)
@@ -157,10 +160,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
            Python code should speedup rendering."""
 
         def submenu(items, menu_level=0, menu_classnames=''):
-            # unsure this is needed any more...
-            #if self.menu_depth>0 and menu_level>self.menu_depth:
-            #    # finish if we reach the maximum level
-            #    return
 
             i = 0
             s = []
