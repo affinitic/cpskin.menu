@@ -13,11 +13,9 @@ ${FF_PROFILE_DIR}  ${CURDIR}/firefoxmobileprofile
 *** Test cases ***
 
 Test desktop menu not visible
-    Logged as owner
     Element Should Not Be Visible  css=ul#portal-globalnav li#portaltab-commune
 
 Test menu
-    Logged as owner
     Click Element       id=mobnav-btn
     Click Element       css=div#mobile-first-level-wrapper a#loisirs
     Click Element       css=ul.submenu-level-1 li:nth-child(2)
@@ -26,7 +24,6 @@ Test menu
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
 Test loading with 3 levels
-    Logged as owner
     Click Element       id=mobnav-btn
     Click Element       css=div#mobile-first-level-wrapper a#loisirs
     Location Should Be  http://localhost:55001/plone/loisirs
@@ -36,7 +33,6 @@ Test loading with 3 levels
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/bibliotheques
 
 Test loading with 4 levels
-    Logged as owner
     Click Element       id=mobnav-btn
     Click Element       css=div#mobile-first-level-wrapper a#loisirs
     Location Should Be  http://localhost:55001/plone/loisirs
@@ -48,7 +44,6 @@ Test loading with 4 levels
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
 Test direct access link
-    Logged as owner
     Click Element  id=mobnav-btn
     Click Element  css=div#mobile-first-level-wrapper a#loisirs
     Click Element  css=ul.submenu-level-1 li:nth-child(2)
@@ -57,6 +52,3 @@ Test direct access link
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/rockers/john_lennon
 
 *** Keywords ***
-
-Logged as owner
-    Log in as site owner
