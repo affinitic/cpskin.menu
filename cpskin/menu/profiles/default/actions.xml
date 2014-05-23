@@ -28,5 +28,31 @@
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>
+  <object name="enable_direct_access" meta_type="CMF Action">
+   <property name="title" i18n:translate="action_add_direct_access">Add direct access</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${context/absolute_url}/@@direct-access/enable_direct_access</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/add.png</property>
+   <property
+      name="available_expr">context/direct-access/can_enable_direct_access</property>
+   <property name="permissions"/>
+   <property name="visible">True</property>
+  </object>
+  <object name="disable_direct_access" meta_type="CMF Action">
+   <property name="title" i18n:translate="action_remove_direct_access">Remove direct access</property>
+   <property name="description"></property>
+   <property
+      name="url_expr">string:${context/absolute_url}/@@direct-access/disable_direct_access</property>
+   <property name="link_target"></property>
+   <property
+      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/remove.png</property>
+   <property
+      name="available_expr">context/direct-access/can_disable_direct_access</property>
+   <property name="permissions"/>
+   <property name="visible">True</property>
+  </object>
  </object>
 </object>

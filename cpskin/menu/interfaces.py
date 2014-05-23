@@ -32,3 +32,30 @@ class IMultiLevelNavigationView(Interface):
     def disable_forth_level():
         """ Disable 4th level navigation
         """
+
+
+class IDirectAccess(Interface):
+    """ Marker interface
+    """
+
+
+class IDirectAccessView(Interface):
+    """ Support for subtyping objects
+    """
+
+    can_enable_direct_access = schema.Bool(
+        u'Can enable direct access',
+        readonly=True
+    )
+    can_disable_direct_access = schema.Bool(
+        u'Can disable direct access',
+        readonly=True
+    )
+
+    def enable_direct_access():
+        """ Enable direct access
+        """
+
+    def disable_direct_access():
+        """ Disable direct access
+        """

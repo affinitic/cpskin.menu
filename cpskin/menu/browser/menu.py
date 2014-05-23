@@ -15,7 +15,8 @@ from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
 
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
-from plone.memoize import ram
+from cpskin.menu.interfaces import IDirectAccess
+
 from zope.i18n import translate
 
 
@@ -237,7 +238,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
             children = item['children']
 
-
             if self.mobile:
                 direct_access_level = 1
                 forth_menu_level = 2
@@ -246,13 +246,23 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                 forth_menu_level = self.is_homepage and 2 or 1
 
             if menu_level == direct_access_level:
+                queryDict = {}
+                queryDict['path'] = {'query': item['item'].getPath(), 'depth': 10}
+                queryDict['object_provides'] = 'cpskin.menu.interfaces.IDirectAccess'
+                catalog = getToolByName(self.context, 'portal_catalog')
+
+                direct_access_catalog = catalog(queryDict)
                 direct_access = []
                 normal_children = []
                 for child in children:
-                    if 'accès directs' in child['item'].Subject:
-                        direct_access.append(child)
-                    else:
+                    if not IDirectAccess.providedBy(child['item'].getObject()):
                         normal_children.append(child)
+                for element in direct_access_catalog:
+                    direct_access.append({'item': element,
+                                          'depth': 1,
+                                          'children': [],
+                                          'currentParent': False,
+                                          'currentItem': False})
                 if direct_access:
                     submenu_render = submenu(
                         normal_children,
@@ -268,7 +278,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                         menu_level=menu_level + 1,
                         menu_classnames='no_direct_access') or u""
             elif menu_level == forth_menu_level:
-                if 'accès directs' in item['item'].Subject:
+                if IDirectAccess.providedBy(item['item'].getObject()):
                     submenu_render = u""
                 else:
                     helper_view = getMultiAdapter((item['item'].getObject(), self.request), name=u'multilevel-navigation')

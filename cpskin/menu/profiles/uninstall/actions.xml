@@ -6,5 +6,9 @@
   </object>
   <object name="disable_4th_level_navigation" remove="True">
   </object>
+  <object name="enable_direct_access" remove="True">
+  </object>
+  <object name="disable_direct_access" remove="True">
+  </object>
  </object>
 </object>

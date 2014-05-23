@@ -19,6 +19,15 @@
     allowed_interface="..interfaces.IMultiLevelNavigationView"
     />
 
+  <browser:page
+    for="*"
+    name="direct-access"
+    class=".directaccessview.DirectAccessView"
+    permission="zope2.View"
+    layer="..interfaces.ICpskinMenuLayer"
+    allowed_interface="..interfaces.IDirectAccessView"
+    />
+
   <browser:viewlet
     name="cpskin.menu"
     manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
