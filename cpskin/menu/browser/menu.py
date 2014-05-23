@@ -240,10 +240,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
             if self.mobile:
                 direct_access_level = 1
-                forth_menu_level = 2
+                fourth_menu_level = 2
             else:
                 direct_access_level = self.is_homepage and 1 or 0
-                forth_menu_level = self.is_homepage and 2 or 1
+                fourth_menu_level = self.is_homepage and 2 or 1
 
             if menu_level == direct_access_level:
                 direct_access = []
@@ -267,7 +267,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                         children,
                         menu_level=menu_level + 1,
                         menu_classnames='no_direct_access') or u""
-            elif menu_level == forth_menu_level:
+            elif menu_level == fourth_menu_level:
                 if 'accès directs' in item['item'].Subject:
                     submenu_render = u""
                 else:
