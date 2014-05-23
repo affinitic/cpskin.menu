@@ -20,24 +20,6 @@ from cpskin.menu.interfaces import IDirectAccess
 from zope.i18n import translate
 
 
-def _render_sections_cachekey(fun, self):
-    key = StringIO()
-    print >> key, self.__class__
-    print >> key, getToolByName(aq_inner(self.context), 'portal_url')()
-    print >> key, self.request.get('LANGUAGE', 'de')
-
-    catalog = getToolByName(self.context, 'portal_catalog')
-    counter = catalog.getCounter()
-    print >> key, counter
-    print >> key, aq_inner(self.context).getPhysicalPath()
-
-    user = getSecurityManager().getUser()
-    roles = user.getRolesInContext(aq_inner(self.context))
-    print >> key, roles
-
-    return key.getvalue()
-
-
 class VirtualCatalogBrain(object):
     """wraps an portal_action actioninfo into a fake catalog brain that can
     be used as item in the dictiontary returned by
@@ -277,7 +259,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                         children,
                         menu_level=menu_level + 1,
                         menu_classnames='no_direct_access') or u""
-            elif menu_level == forth_menu_level:
+            elif menu_level == fourth_menu_level:
                 if IDirectAccess.providedBy(item['item'].getObject()):
                     submenu_render = u""
                 else:
@@ -323,6 +305,5 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
             )
         return menus
 
-#    @ram.cache(_render_sections_cachekey)
     def render(self):
         return self.index()
