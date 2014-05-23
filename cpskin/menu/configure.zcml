@@ -25,7 +25,7 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
-  <interface interface="cpskin.menu.interfaces.IForthLevelNavigation" />
+  <interface interface="cpskin.menu.interfaces.IFourthLevelNavigation" />
   <interface interface="cpskin.menu.interfaces.IDirectAccess" />
 
 </configure>
