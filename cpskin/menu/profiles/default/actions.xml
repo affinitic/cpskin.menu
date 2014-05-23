@@ -3,28 +3,24 @@
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <object name="object_buttons" meta_type="CMF Action Category">
   <object name="enable_4th_level_navigation" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_add_forth_level">Add 4th level navigation</property>
+   <property name="title" i18n:translate="action_add_fourth_level">Add 4th level navigation</property>
    <property name="description"></property>
    <property
-      name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/enable_forth_level</property>
+      name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/enable_fourth_level</property>
    <property name="link_target"></property>
    <property
-      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/add.png</property>
-   <property
-      name="available_expr">context/multilevel-navigation/can_enable_forth_level</property>
+      name="available_expr">context/multilevel-navigation/can_enable_fourth_level</property>
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>
   <object name="disable_4th_level_navigation" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_remove_forth_level">Remove the 4th level navigation</property>
+   <property name="title" i18n:translate="action_remove_fourth_level">Remove the 4th level navigation</property>
    <property name="description"></property>
    <property
-      name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/disable_forth_level</property>
+      name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/disable_fourth_level</property>
    <property name="link_target"></property>
    <property
-      name="icon_expr">string:${portal_url}/++resource++cpskin.menu.resources/remove.png</property>
-   <property
-      name="available_expr">context/multilevel-navigation/can_disable_forth_level</property>
+      name="available_expr">context/multilevel-navigation/can_disable_fourth_level</property>
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>

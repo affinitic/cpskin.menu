@@ -8,7 +8,7 @@ from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.interface import noLongerProvides
 
-from cpskin.menu.interfaces import IForthLevelNavigation
+from cpskin.menu.interfaces import IFourthLevelNavigation
 from cpskin.menu.interfaces import IMultiLevelNavigationView
 
 
@@ -35,7 +35,7 @@ class MultiLevelNavigationView(BrowserView):
         return context
 
     @property
-    def can_enable_forth_level(self):
+    def can_enable_fourth_level(self):
         """ Helper method used by the actions to know if they should
         be displayed or not
         """
@@ -46,7 +46,7 @@ class MultiLevelNavigationView(BrowserView):
             return False
 
         depth = len(context.getPhysicalPath()[2:])
-        if depth == 3 and not IForthLevelNavigation.providedBy(context):
+        if depth == 3 and not IFourthLevelNavigation.providedBy(context):
             return True
         else:
             return False
@@ -54,27 +54,27 @@ class MultiLevelNavigationView(BrowserView):
     @property
     def is_enabled(self):
         context = self._get_real_context()
-        return IForthLevelNavigation.providedBy(context)
+        return IFourthLevelNavigation.providedBy(context)
 
     @property
-    def can_disable_forth_level(self):
-        """ Return True if the forth menu level is enable in this context
+    def can_disable_fourth_level(self):
+        """ Return True if the fourth menu level is enable in this context
         """
         context = self._get_real_context()
         sm = getSecurityManager()
         return self.is_enabled and sm.checkPermission("Portlets: Manage portlets", context)
 
-    def enable_forth_level(self):
+    def enable_fourth_level(self):
         """ Enable the 4th level navigation """
         context = self._get_real_context()
-        alsoProvides(context, IForthLevelNavigation)
+        alsoProvides(context, IFourthLevelNavigation)
         self._redirect()
 
-    def disable_forth_level(self):
+    def disable_fourth_level(self):
         """ Disable the 4th level navigation """
         context = self._get_real_context()
-        noLongerProvides(context, IForthLevelNavigation)
+        noLongerProvides(context, IFourthLevelNavigation)
         self._redirect()
 
     def __call__(self):
-        return self.is_forth_level_nav_enabled(self.context)
+        return self.is_fourth_level_nav_enabled(self.context)

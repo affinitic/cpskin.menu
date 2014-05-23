@@ -240,10 +240,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
             if self.mobile:
                 direct_access_level = 1
-                forth_menu_level = 2
+                fourth_menu_level = 2
             else:
                 direct_access_level = self.is_homepage and 1 or 0
-                forth_menu_level = self.is_homepage and 2 or 1
+                fourth_menu_level = self.is_homepage and 2 or 1
 
             if menu_level == direct_access_level:
                 queryDict = {}
