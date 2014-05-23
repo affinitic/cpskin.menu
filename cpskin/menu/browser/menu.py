@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
-from cStringIO import StringIO
 
 from Acquisition import aq_inner, aq_parent
-from AccessControl import getSecurityManager
 
 from plone.app.layout.viewlets import common
 from plone.app.layout.navigation.navtree import buildFolderTree
@@ -143,7 +141,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
         # to mark currentItems (or GlobalSectionsViewlet in
         # plone.app.layout.viewlets.common)
         for actionInfo in actions:
-            data['children'].insert(0,
+            data['children'].insert(
+                0,
                 {'item': VirtualCatalogBrain(actionInfo),
                  'depth': 1, 'children': [],
                  'currentParent': False, 'currentItem': False})
@@ -282,8 +281,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                 title=self.html_escape(title),
                 description=self.html_escape(desc),
                 url=item['item'].getURL(),
-                classnames=len(classes) and
-                    u' class="%s"' % (" ".join(classes)) or u"",
+                classnames=len(classes) and u' class="%s"' % (" ".join(classes)) or u"",
                 selected=item['currentItem'] and u' class="selected"' or u"",
                 submenu=submenu_render)
 
