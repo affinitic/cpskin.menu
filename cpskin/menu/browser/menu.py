@@ -9,47 +9,18 @@ from plone.app.layout.navigation.navtree import buildFolderTree
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
-from Products.CMFPlone.browser.navtree import SitemapQueryBuilder
-
 from Products.CMFPlone.interfaces import IPloneSiteRoot
 
 from cpskin.menu.interfaces import IDirectAccess
 
 from zope.i18n import translate
 
-
-class VirtualCatalogBrain(object):
-    """wraps an portal_action actioninfo into a fake catalog brain that can
-    be used as item in the dictiontary returned by
-    plone.app.layout.navigation.navtree.buildFolderTree
-    """
-
-    def __init__(self, action):
-        self.url = action['url']
-        self.Title = action['title']
-        self.Description = action['description']
-        self.exclude_from_nav = not (action['available'] and action['allowed'])
-        self.id = "action-%s" % action['id'].replace('_', '-')
-
-    def getURL(self):
-        return self.url
+from collective.superfish.browser.sections import (VirtualCatalogBrain,
+                                                   SuperFishQueryBuilder,
+                                                   SuperFishViewlet)
 
 
-class CpskinMenuQueryBuilder(SitemapQueryBuilder):
-    """Build a folder tree query suitable for a dropdownmenu
-    """
-
-    def __init__(self, context):
-        super(CpskinMenuQueryBuilder, self).__init__(context)
-
-        portal_state = getMultiAdapter(
-            (context, context.REQUEST), name=u'plone_portal_state')
-        root = portal_state.navigation_root_path()
-
-        self.query['path']['query'] = root
-
-
-class CpskinMenuViewlet(common.GlobalSectionsViewlet):
+class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
     index = ViewPageTemplateFile('menu.pt')
 
@@ -58,14 +29,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
     menu_id = 'portal-globalnav-cpskinmenu'
     menu_depth = 4
 
-    # See http://wiki.python.org/moin/EscapingHtml
-    html_escape_table = {
-        "&": "&amp;",
-        '"': "&quot;",
-        "'": "&#39;",
-        ">": "&gt;",
-        "<": "&lt;",
-    }
     ADD_PORTAL_TABS = True
 
     # this template is used to generate a single menu item.
@@ -98,7 +61,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
         self.current_url = context_state.current_page_url()
         self.site_url = portal_state.portal_url()
-#        self.navigation_root_path = portal_state.navigation_root_path()
         context = self._get_real_context()
         self.navigation_root_path = '/'.join(context.getPhysicalPath()[:3])
         self.mobile_navigation_root_path = portal_state.navigation_root_path()
@@ -106,7 +68,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
     def _build_navtree(self, navigation_root, depth):
         # we generate our navigation out of the sitemap. so we can use the
         # highspeed navtree generation, and use it's caching features too.
-        query = CpskinMenuQueryBuilder(self.context)()
+        query = SuperFishQueryBuilder(self.context)()
         query['path']['depth'] = depth
         query['path']['query'] = navigation_root
 
@@ -117,43 +79,13 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
     def update(self):
         super(CpskinMenuViewlet, self).update()
         # Why different depth in desktop and mobile?
-        self.data_desktop = self._build_navtree(self.navigation_root_path,
-                                                depth=self.menu_depth - 1)
+        self.data = self._build_navtree(self.navigation_root_path,
+                                        depth=self.menu_depth - 1)
         self.data_mobile = self._build_navtree(self.mobile_navigation_root_path,
                                                depth=self.menu_depth)
 
         if self.ADD_PORTAL_TABS and self.is_homepage:
-            self._addActionsToData(self.data_desktop)
-
-    def _actions(self):
-        context = aq_inner(self.context)
-        context_state = getMultiAdapter((context, self.request),
-                                        name=u'plone_context_state')
-        actions = context_state.actions('portal_tabs')
-
-        return actions or []
-
-    def _addActionsToData(self, data):
-        """inject the portal_actions before the rest of the navigation
-        """
-        actions = self._actions()
-        actions.reverse()
-
-        # XXX maybe we can use some ideas of
-        # CMFPlone.browser.navigation.CatalogNavigationTabs
-        # to mark currentItems (or GlobalSectionsViewlet in
-        # plone.app.layout.viewlets.common)
-        for actionInfo in actions:
-            data['children'].insert(
-                0,
-                {'item': VirtualCatalogBrain(actionInfo),
-                 'depth': 1, 'children': [],
-                 'currentParent': False, 'currentItem': False})
-
-    def html_escape(self, text):
-        """Produce entities within text."""
-        # XXX maybe we should use a static method here
-        return "".join(self.html_escape_table.get(c, c) for c in text)
+            self._addActionsToData()
 
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
@@ -181,8 +113,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
             if self.menu_id:
                 if not menu_level:
                     menu_id = self.menu_id and u" id=\"%s\"" % (self.menu_id) or u""
-#                else:
-#                    menu_id = self.menu_id and u" id=\"%s-level-%s\"" % (self.menu_id, menu_level) or u""
 
             return self._submenu_item % dict(
                 id=menu_id,
@@ -287,9 +217,9 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
 
         self.mobile = False
         self.menu_id = 'portal-globalnav-cpskinmenu'
-        if self.data_desktop:
+        if self.data:
             menus['desktop'] = submenu(
-                self.data_desktop['children'],
+                self.data['children'],
                 menu_classnames=u"sf-menu"
             )
         self.mobile = True
@@ -300,6 +230,3 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
                 menu_classnames=u"sf-menu-mobile"
             )
         return menus
-
-    def render(self):
-        return self.index()

@@ -39,7 +39,8 @@ setup(name='cpskin.menu',
           'setuptools',
           'plone.api',
           'Plone',
-          'cpskin.locales'
+          'cpskin.locales',
+          'collective.superfish'
           # -*- Extra requirements: -*-
       ],
       extras_require={
