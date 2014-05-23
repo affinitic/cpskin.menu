@@ -15,13 +15,14 @@ Test Teardown  Close all browsers
 Test menu
     Logged as owner
     Page Should Contain Link  LOISIRS
-    Click Link          LOISIRS
+    Click Link                LOISIRS
     Page Should Contain Link  Art & Culture
-    Click Link          Art & Culture
+    Click Link                Art & Culture
     Page Should Contain Link  Artistes
-    Click Link          Artistes
+    Click Link                Artistes
     Page Should Contain Link  Tata
-    Click Link          Tata
+    Click Link                Tata
+
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
     Location Should Contain   tata
@@ -29,6 +30,7 @@ Test menu
 Test loading with 3 levels
     Logged as owner
     Page Should Contain Link  LOISIRS
+
     Click Link          LOISIRS
     Location Should Be  http://localhost:55001/plone/loisirs
     Click Link          Art & Culture
@@ -39,6 +41,7 @@ Test loading with 3 levels
 Test loading with 4 levels
     Logged as owner
     Page Should Contain Link  LOISIRS
+
     Click Link          LOISIRS
     Location Should Be  http://localhost:55001/plone/loisirs
     Click Link          Art & Culture
@@ -55,6 +58,7 @@ Test begin on other page than root
     Go To  http://localhost:55001/plone/commune/services_communaux/finances
 
     Page Should Contain Link  LOISIRS
+
     Click Link          LOISIRS
     Location Should Be  http://localhost:55001/plone/loisirs
     Click Link          Art & Culture

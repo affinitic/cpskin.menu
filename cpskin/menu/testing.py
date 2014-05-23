@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.testing import z2
 from plone.app.testing import FunctionalTesting
@@ -12,7 +13,7 @@ from plone.app.testing import (login,
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 from zope.interface import alsoProvides
 
-from cpskin.menu.interfaces import IFourthLevelNavigation
+from cpskin.menu.interfaces import IFourthLevelNavigation, IDirectAccess
 
 import cpskin.menu
 
@@ -21,23 +22,28 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
     """
     plone (portal root)
     |
-    |-- Commune
-    |   `-- Services communaux
-    |       `-- Finances
+    |-- 1: Commune
+    |   `-- 2: Services communaux
+    |       `-- 3: Finances
     |
-    `-- Loisirs
-        |-- Tourisme
-        |   `-- Promenades
+    `-- 1: Loisirs
+        |-- 2: Tourisme
+        |   `-- 3: Promenades [Direct access]
         |
-        `-- Art & Culture
-            |-- Bibliothèques
-            `-- Artistes
-                |-- Tata
-                `-- Yoyo
+        `-- 2: Art & Culture
+            |-- 3: Bibliothèques
+            `-- 3: Artistes [Fourth level navigation]
+                |-- 4: Tata
+                |-- 4: Yoyo
+                |-- 4: Abba [Direct access]
+                `-- 4: Rockers
+                    |-- 5: John Lennon [Direct access]
+                    `-- 5: Mick Jagger
     """
 
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'cpskin.menu:default')
+        catalog = getToolByName(portal, 'portal_catalog')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
         commune = api.content.create(
@@ -66,7 +72,7 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             title='Tourisme',
             id='tourisme',
             container=loisirs)
-        api.content.create(
+        promenades = api.content.create(
             type='Folder',
             title='Promenades',
             id='promenades',
@@ -82,6 +88,7 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             title='Bibliothèques',
             id='bibliotheques',
             container=art_et_culture)
+
         artistes = api.content.create(
             type='Folder',
             title='Artistes',
@@ -97,8 +104,35 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             title='Yoyo',
             id='yoyo',
             container=artistes)
+        abba = api.content.create(
+            type='Folder',
+            title='Abba',
+            id='abba',
+            container=artistes)
+        rockers = api.content.create(
+            type='Folder',
+            title='Rockers',
+            id='rockers',
+            container=artistes)
+        john_lennon = api.content.create(
+            type='Folder',
+            title='John Lennon',
+            id='john_lennon',
+            container=rockers)
+        api.content.create(
+            type='Folder',
+            title='Mick Jagger',
+            id='mick_jagger',
+            container=rockers)
 
         alsoProvides(artistes, IFourthLevelNavigation)
+
+        alsoProvides(promenades, IDirectAccess)
+        catalog.reindexObject(promenades)
+        alsoProvides(abba, IDirectAccess)
+        catalog.reindexObject(abba)
+        alsoProvides(john_lennon, IDirectAccess)
+        catalog.reindexObject(john_lennon)
 
 
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(
