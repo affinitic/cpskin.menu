@@ -58,7 +58,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet):
     # monkey patch this if you want to use collective.superfish together with
     # global_sections, need another start level or menu depth.
     menu_id = 'portal-globalnav-cpskinmenu'
-    menu_depth = 4
+    menu_depth = 3
 
     # See http://wiki.python.org/moin/EscapingHtml
     html_escape_table = {

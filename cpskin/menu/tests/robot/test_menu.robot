@@ -51,8 +51,6 @@ Test loading with 4 levels
     Click Link          Tata
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
-    Location Should Contain   tata
-
 Test begin on other page than root
     Logged as owner
     Go To  http://localhost:55001/plone/commune/services_communaux/finances
@@ -68,8 +66,6 @@ Test begin on other page than root
     Click Link          Tata
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
-    Location Should Contain   tata
-
 Test keyboard navigation
     Logged as owner
     Page Should Contain Link  LOISIRS
@@ -80,7 +76,21 @@ Test keyboard navigation
     Page Should Contain Link  Tata
     Click Link                Tata
     Location Should Be        http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
-    Location Should Contain   tata
+
+
+Test level 5 not in menu
+    Logged as owner
+    Pause
+    Page Should Contain Link  LOISIRS
+
+    Click Link          LOISIRS
+    Location Should Be  http://localhost:55001/plone/loisirs
+    Click Link          Art & Culture
+    Location Should Be  http://localhost:55001/plone/loisirs
+    Click Link          Artistes
+    Location Should Be  http://localhost:55001/plone/loisirs
+    Click Link          Rockers
+    Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/rockers
 
 *** Keywords ***
 

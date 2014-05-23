@@ -39,6 +39,7 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
                 `-- 4: Rockers
                     |-- 5: John Lennon [Direct access]
                     `-- 5: Mick Jagger
+                        `-- test
     """
 
     def setUpPloneSite(self, portal):
