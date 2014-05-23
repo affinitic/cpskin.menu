@@ -37,9 +37,11 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
                 |-- 4: Yoyo
                 |-- 4: Abba [Direct access]
                 `-- 4: Rockers
-                    |-- 5: John Lennon [Direct access]
-                    `-- 5: Mick Jagger
-                        `-- test
+                |   |-- 5: John Lennon [Direct access]
+                |   `-- 5: Mick Jagger
+                |       `-- test
+                `-- 4: Cinema [Fourth level navigation] (wrong place)
+                    `-- 5: Kinepolis
     """
 
     def setUpPloneSite(self, portal):
@@ -126,7 +128,19 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
             id='mick_jagger',
             container=rockers)
 
+        cinema = api.content.create(
+            type='Folder',
+            title='Cinema',
+            id='cinema',
+            container=artistes)
+        api.content.create(
+            type='Folder',
+            title='Kinepolis',
+            id='kinepolis',
+            container=cinema)
+
         alsoProvides(artistes, IFourthLevelNavigation)
+        alsoProvides(cinema, IFourthLevelNavigation)
 
         alsoProvides(promenades, IDirectAccess)
         catalog.reindexObject(promenades)
