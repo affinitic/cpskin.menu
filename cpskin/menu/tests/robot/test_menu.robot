@@ -13,7 +13,6 @@ Test Teardown  Close all browsers
 
 
 Test menu
-    Logged as owner
     Page Should Contain Link   LOISIRS
     Click Link                 LOISIRS
     Element Should Be Visible  css=ul.navTreeLevel0 a#loisirs-art_et_culture
@@ -26,7 +25,6 @@ Test menu
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
 Test loading with 3 levels
-    Logged as owner
     Page Should Contain Link  LOISIRS
 
     Click Link          LOISIRS
@@ -37,7 +35,6 @@ Test loading with 3 levels
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/bibliotheques
 
 Test loading with 4 levels
-    Logged as owner
     Page Should Contain Link  LOISIRS
 
     Click Link          LOISIRS
@@ -50,7 +47,6 @@ Test loading with 4 levels
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
 Test begin on other page than root
-    Logged as owner
     Go To  http://localhost:55001/plone/commune/services_communaux/finances
 
     Page Should Contain Link  LOISIRS
@@ -65,7 +61,6 @@ Test begin on other page than root
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/tata
 
 Test keyboard navigation
-    Logged as owner
     Page Should Contain Link   LOISIRS
     Click Link                 LOISIRS
     Focus                      css=a#loisirs-art_et_culture
@@ -77,7 +72,6 @@ Test keyboard navigation
 
 
 Test level 5 not in menu
-    Logged as owner
     Page Should Contain Link  LOISIRS
 
     Click Link          LOISIRS
@@ -90,7 +84,6 @@ Test level 5 not in menu
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/rockers
 
 Test fourth level navigation folder not working in wrong place
-    Logged as owner
     Page Should Contain Link  LOISIRS
 
     Click Link          LOISIRS
@@ -107,6 +100,3 @@ Test fourth level navigation folder not working in wrong place
 
 
 *** Keywords ***
-
-Logged as owner
-    Log in as site owner

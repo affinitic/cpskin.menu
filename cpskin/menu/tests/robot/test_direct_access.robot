@@ -13,7 +13,6 @@ Test Teardown  Close all browsers
 
 
 Test direct access visibility
-    Logged as owner
     Click Link     LOISIRS
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
@@ -25,7 +24,6 @@ Test direct access visibility
     Element Should Not Be Visible  css=ul.direct_access a#loisirs-tourisme-promenades
 
 Test direct access link
-    Logged as owner
     Click Link     LOISIRS
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
@@ -33,6 +31,3 @@ Test direct access link
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/rockers/john_lennon
 
 *** Keywords ***
-
-Logged as owner
-    Log in as site owner
