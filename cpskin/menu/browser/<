@@ -9,6 +9,7 @@
 <ul tal:condition="not:view/is_homepage"
     tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
 
+<!--<button href="#" id="toggle_search" />-->
 <a href="#" id="search-btn"></a>
 <div id="mobnav-btn">Menu de navigation</div>
 <div id="mobile-first-level-wrapper"></div>

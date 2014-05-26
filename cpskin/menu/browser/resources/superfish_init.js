@@ -158,13 +158,11 @@
         //second: create breadcrumbs
         create_breadcrumb($menu);
 
-        $('#search-btn').prepOverlay(
-            {
-                subtype: 'ajax',
-                filter: '#portal-searchbox',
-                config: {expose:{color:'#00f'}},
-                cssclass: 'mobile-overlay-search'
-            }
-        );
+        $('#search-btn').click(function(e){
+          e.preventDefault();
+          $(this).toggleClass('selected');
+          $('#portal-searchbox').toggle();
+          $('#portal-searchbox input.searchField').focus();
+        });
     });
 })(jQuery);
