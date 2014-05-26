@@ -32,12 +32,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
     ADD_PORTAL_TABS = True
 
     # this template is used to generate a single menu item.
-    _menu_item = u"""
-    <li id="%(menu_id)s-%(id)s"%(classnames)s><span%(selected)s
-        ><a href="%(url)s" title="%(description)s" id="%(id)s">%(title)s</a></span>%(submenu)s </li>"""
+    _menu_item = u"""<li id="%(menu_id)s-%(id)s"%(classnames)s><span%(selected)s><a href="%(url)s" title="%(description)s" id="%(id)s">%(title)s</a></span>%(submenu)s</li>"""
 
     # this template is used to generate a menu container
-    _submenu_item = u"""\n<ul%(id)s class="%(classname)s">%(menuitems)s</ul>"""
+    _submenu_item = u"""<ul%(id)s class="%(classname)s">%(menuitems)s</ul>"""
 
     def _get_real_context(self):
         context = self.context

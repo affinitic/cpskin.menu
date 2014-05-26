@@ -23,6 +23,15 @@ ul.navTreeLevel0{
     margin-bottom: 1em;
 }
 
+.sf-menu ul.navTreeLevel1.no_direct_access,
+.sf-menu ul.navTreeLevel2.no_direct_access,
+.sf-menu ul.navTreeLevel3.no_direct_access,
+.sf-menu ul.navTreeLevel1.has_direct_access,
+.sf-menu ul.navTreeLevel2.has_direct_access,
+.sf-menu ul.navTreeLevel3.has_direct_access{
+    left: 0;
+}
+
 .sf-menu ul.navTreeLevel1,
 .sf-menu ul.navTreeLevel2,
 .sf-menu ul.navTreeLevel3{
@@ -33,11 +42,15 @@ ul.navTreeLevel0{
     display: inherit;
 }
 
+ul.navTreeLevel1.direct_access > li {
+    background-color: red;
+    width: 100%;
+    display: inline-block;
+}
 #portal-globalnav-cpskinmenu-tabs li a,
 #portal-globalnav-cpskinmenu li a {
-    border-right: 0.1em solid #FFFFFF;
     display: inline-block;
-    min-width: 6em;
+    min-width: 25%;
     padding: 0.5em 1em 1.7em;
     white-space: normal;
 }

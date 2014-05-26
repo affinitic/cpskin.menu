@@ -151,6 +151,25 @@
                 //$$.children('a').data('follow', true);
                 $$.find('> span a').data('follow', true);
             });
+            //Position the <ul> tags below the menu
+            if ($ul.length > 0){
+                var heightParent = $('.sf-menu').position().top + $('.sf-menu').height();
+                var maxHeight = 0;
+                $ul.each(function() {
+                    var top = heightParent;
+                    if (this.className == 'navTreeLevel2 '){
+                        top = $($ul.parent().closest('ul')).height();
+                    }
+                    $(this).css('top', top);
+                    if(maxHeight < $(this).height()) {
+                        maxHeight = $(this).height();
+                    }
+                });
+                //Fixed height depending on the maxHeight <ul>
+                $ul.each(function() {
+                    $(this).height(maxHeight);
+                });
+            }
             return this;
         }
     });
