@@ -12,6 +12,7 @@
     float: right;
     left: 75%;
     width: 25%;
+    background-color: red;
 }
 
 ul.navTreeLevel0 li a{
@@ -43,16 +44,19 @@ ul.navTreeLevel0{
 }
 
 ul.navTreeLevel1.direct_access > li {
-    background-color: red;
-    width: 100%;
-    display: inline-block;
+    width: 100% !important;
+    display: block !important;
 }
 #portal-globalnav-cpskinmenu-tabs li a,
 #portal-globalnav-cpskinmenu li a {
-    display: inline-block;
-    min-width: 25%;
+    display: block;
     padding: 0.5em 1em 1.7em;
     white-space: normal;
+}
+#portal-globalnav-cpskinmenu-tabs li,
+#portal-globalnav-cpskinmenu li {
+    display: inline-block;
+    width: 25%;
 }
 #portal-globalnav-cpskinmenu .selected a,
 #portal-globalnav-cpskinmenu-tabs .selected a,
