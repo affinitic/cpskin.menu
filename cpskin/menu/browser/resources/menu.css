@@ -22,14 +22,18 @@ ul.navTreeLevel0 li a{
 ul.navTreeLevel0{
     background-color: #DDDDDD;
     margin-bottom: 1em;
+    position: relative;
+}
+.sf-menu ul.navTreeLevel1.has_direct_access{
+    padding-right: 25%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
-.sf-menu ul.navTreeLevel1.no_direct_access,
-.sf-menu ul.navTreeLevel2.no_direct_access,
-.sf-menu ul.navTreeLevel3.no_direct_access,
 .sf-menu ul.navTreeLevel1.has_direct_access,
-.sf-menu ul.navTreeLevel2.has_direct_access,
-.sf-menu ul.navTreeLevel3.has_direct_access{
+.sf-menu ul.navTreeLevel2,
+.sf-menu ul.navTreeLevel3{
     left: 0;
 }
 
@@ -46,6 +50,9 @@ ul.navTreeLevel0{
 ul.navTreeLevel1.direct_access > li {
     width: 100% !important;
     display: block !important;
+}
+ul.navTreeLevel1.has_direct_access > li {
+    width: 33.33% !important;
 }
 #portal-globalnav-cpskinmenu-tabs li a,
 #portal-globalnav-cpskinmenu li a {

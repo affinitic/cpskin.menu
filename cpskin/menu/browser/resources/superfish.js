@@ -153,13 +153,9 @@
             });
             //Position the <ul> tags below the menu
             if ($ul.length > 0){
-                var heightParent = $('.sf-menu').position().top + $('.sf-menu').height();
                 var maxHeight = 0;
                 $ul.each(function() {
-                    var top = heightParent;
-                    if (this.className == 'navTreeLevel2 '){
-                        top = $($ul.parent().closest('ul')).height();
-                    }
+                    var top = $($ul.parent().closest('ul')).height();
                     $(this).css('top', top);
                     if(maxHeight < $(this).height()) {
                         maxHeight = $(this).height();
