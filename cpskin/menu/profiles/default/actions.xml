@@ -2,8 +2,8 @@
 <object name="portal_actions" meta_type="Plone Actions Tool"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <object name="object_buttons" meta_type="CMF Action Category">
-  <object name="enable_4th_level_navigation" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_add_fourth_level">Add 4th level navigation</property>
+  <object name="enable_4th_level_navigation" meta_type="CMF Action" i18n:domain="cpskin">
+   <property name="title" i18n:translate="">Add 4th level navigation blabla</property>
    <property name="description"></property>
    <property
       name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/enable_fourth_level</property>
@@ -13,8 +13,8 @@
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>
-  <object name="disable_4th_level_navigation" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_remove_fourth_level">Remove the 4th level navigation</property>
+  <object name="disable_4th_level_navigation" meta_type="CMF Action" i18n:domain="cpskin">
+   <property name="title" i18n:translate="">Remove the 4th level navigation</property>
    <property name="description"></property>
    <property
       name="url_expr">string:${context/absolute_url}/@@multilevel-navigation/disable_fourth_level</property>
@@ -24,8 +24,8 @@
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>
-  <object name="enable_direct_access" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_add_direct_access">Add direct access</property>
+  <object name="enable_direct_access" meta_type="CMF Action" i18n:domain="cpskin">
+   <property name="title" i18n:translate="">Add direct access</property>
    <property name="description"></property>
    <property
       name="url_expr">string:${context/absolute_url}/@@direct-access/enable_direct_access</property>
@@ -35,8 +35,8 @@
    <property name="permissions"/>
    <property name="visible">True</property>
   </object>
-  <object name="disable_direct_access" meta_type="CMF Action">
-   <property name="title" i18n:translate="action_remove_direct_access">Remove direct access</property>
+  <object name="disable_direct_access" meta_type="CMF Action" i18n:domain="cpskin">
+   <property name="title" i18n:translate="">Remove direct access</property>
    <property name="description"></property>
    <property
       name="url_expr">string:${context/absolute_url}/@@direct-access/disable_direct_access</property>
