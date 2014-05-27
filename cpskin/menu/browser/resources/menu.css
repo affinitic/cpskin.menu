@@ -32,6 +32,7 @@ ul.navTreeLevel0{
 }
 
 .sf-menu ul.navTreeLevel1.has_direct_access,
+.sf-menu ul.navTreeLevel1.no_direct_access,
 .sf-menu ul.navTreeLevel2,
 .sf-menu ul.navTreeLevel3{
     left: 0;
