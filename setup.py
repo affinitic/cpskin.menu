@@ -40,7 +40,8 @@ setup(name='cpskin.menu',
           'plone.api',
           'Plone',
           'cpskin.locales',
-          'collective.superfish'
+          'collective.superfish',
+          'z3c.jbot',
           # -*- Extra requirements: -*-
       ],
       extras_require={

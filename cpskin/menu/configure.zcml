@@ -3,8 +3,10 @@
     xmlns:five="http://namespaces.zope.org/five"
     xmlns:i18n="http://namespaces.zope.org/i18n"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:browser="http://namespaces.zope.org/browser"
     i18n_domain="cpskin">
 
+  <include package="z3c.jbot" file="meta.zcml" />
   <five:registerPackage package="." initialize=".initialize" />
   <include package=".browser"/>
   <include package="cpskin.locales" />
@@ -27,5 +29,9 @@
 
   <interface interface="cpskin.menu.interfaces.IFourthLevelNavigation" />
   <interface interface="cpskin.menu.interfaces.IDirectAccess" />
+
+  <browser:jbot
+      directory="overrides"
+      layer=".interfaces.ICpskinMenuLayer" />
 
 </configure>

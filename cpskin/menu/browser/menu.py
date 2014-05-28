@@ -3,6 +3,7 @@ from zope.component import getMultiAdapter
 
 from Acquisition import aq_inner, aq_parent
 
+from plone import api
 from plone.app.layout.viewlets import common
 from plone.app.layout.navigation.navtree import buildFolderTree
 
@@ -32,7 +33,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
     ADD_PORTAL_TABS = True
 
     # this template is used to generate a single menu item.
-    _menu_item = u"""<li id="%(menu_id)s-%(id)s"%(classnames)s><span%(selected)s><a href="%(url)s" title="%(description)s" id="%(id)s">%(title)s</a></span>%(submenu)s</li>"""
+    _menu_item = u"""<li id="%(menu_id)s-%(id)s"%(classnames)s><span%(selected)s><a href="%(url)s" title="%(description)s" id="%(id)s" tabindex="%(tabindex)s">%(title)s</a></span>%(submenu)s</li>"""
 
     # this template is used to generate a menu container
     _submenu_item = u"""<ul%(id)s class="%(classname)s">%(menuitems)s</ul>"""
@@ -89,8 +90,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
 
-        def submenu(items, menu_level=0, menu_classnames=''):
-
+        def submenu(items, tabindex, menu_level=0, menu_classnames=''):
             i = 0
             s = []
 
@@ -105,7 +105,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 i += 1
                 last = (i == len(items))
 
-                s.append(menuitem(item, first, last, menu_level))
+                s.append(menuitem(item, tabindex, first, last, menu_level))
 
             menu_id = u""
             if self.menu_id:
@@ -119,7 +119,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                     menu_level, menu_classnames)
             )
 
-        def menuitem(item, first=False, last=False, menu_level=0):
+        def menuitem(item, tabindex, first=False, last=False, menu_level=0):
             classes = []
 
             if first:
@@ -173,15 +173,18 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 if direct_access:
                     submenu_render = submenu(
                         normal_children,
+                        tabindex,
                         menu_level=menu_level + 1,
                         menu_classnames='has_direct_access') or u""
                     submenu_render += submenu(
                         direct_access,
+                        tabindex,
                         menu_level=menu_level + 1,
                         menu_classnames='direct_access') or u""
                 else:
                     submenu_render = submenu(
                         children,
+                        tabindex,
                         menu_level=menu_level + 1,
                         menu_classnames='no_direct_access') or u""
             elif menu_level == fourth_menu_level:
@@ -192,17 +195,20 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                     if helper_view.is_enabled:
                         submenu_render = submenu(
                             children,
+                            tabindex,
                             menu_level=menu_level + 1) or u""
                     else:
                         submenu_render = u""
             else:
                 submenu_render = submenu(
                     children,
+                    tabindex,
                     menu_level=menu_level + 1) or u""
 
             return self._menu_item % dict(
                 menu_id=self.menu_id,
                 id=item_id,
+                tabindex=tabindex,
                 level=menu_level,
                 title=self.html_escape(title),
                 description=self.html_escape(desc),
@@ -215,9 +221,13 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
         self.mobile = False
         self.menu_id = 'portal-globalnav-cpskinmenu'
+
+        tabindex = self._calculate_tabindex()
+
         if self.data:
             menus['desktop'] = submenu(
                 self.data['children'],
+                tabindex,
                 menu_classnames=u"sf-menu"
             )
         self.mobile = True
@@ -225,6 +235,41 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.data_mobile:
             menus['mobile'] = submenu(
                 self.data_mobile['children'],
+                tabindex,
                 menu_classnames=u"sf-menu-mobile"
             )
         return menus
+
+    def _calculate_tabindex(self):
+        """
+        Calculate tabindex of actual context
+        """
+        navigation_root = getNavigationRoot(self.context)
+        tabindex = 1
+        for brain in navigation_root:
+            menu_object = brain.getObject()
+            if menu_object == self.context:
+                break
+            tabindex += 1
+        return tabindex
+
+
+def getNavigationRoot(context):
+    """
+    Return brains of the navigation root menu
+    """
+    # Get 1st level folders appearing in navigation
+    portal_catalog = api.portal.get_tool('portal_catalog')
+    navtreeProps = api.portal.get_tool('portal_properties').navtree_properties
+    portal = api.portal.get()
+    queryDict = {}
+    # LATER : queryPath = getNavigationRoot(context) ?
+    queryDict['path'] = {'query': '/'.join(portal.getPhysicalPath()), 'depth': 1}
+    if navtreeProps.enable_wf_state_filtering:
+        queryDict['review_state'] = navtreeProps.wf_states_to_show
+    queryDict['sort_on'] = 'getObjPositionInParent'
+    queryDict['portal_type'] = 'Folder'
+    queryDict['is_default_page'] = False
+    brains = portal_catalog(queryDict)
+    res = [b for b in brains if b.id not in navtreeProps.idsNotToList]
+    return res
