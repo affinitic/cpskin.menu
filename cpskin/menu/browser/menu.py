@@ -218,6 +218,9 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 submenu=submenu_render)
 
         menus = {}
+        # We do not need to calculate menu if not in a theme view
+        if not self._is_in_theme():
+            return menus
 
         self.mobile = False
         self.menu_id = 'portal-globalnav-cpskinmenu'
@@ -252,6 +255,43 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 break
             tabindex += 1
         return tabindex
+
+    def _is_in_theme(self):
+        """
+        Returns True if we are currently in a theme (non root, navigation view)
+        """
+        context = self.context
+        # Get the right object if we are on a default page
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        plone_view = portal.restrictedTraverse('@@plone')
+        if plone_view.isDefaultPageInFolder():
+            # if the context is a default page, get the parent!
+            obj = context.aq_inner.aq_parent
+            context = obj
+        # Take the path, traverse to the first level and see if it is a
+        # element respecting the navigation strategy
+        portal_url = getToolByName(context, 'portal_url')
+        contentPath = portal_url.getRelativeContentPath(context)
+        if not len(contentPath):
+            # we are on the home page
+            return False
+        # Use the portal_catalog the get the first level element
+        portal_catalog = getToolByName(context, 'portal_catalog')
+        portal = getToolByName(context, 'portal_url').getPortalObject()
+        queryDict = {}
+        queryDict['path'] = {'query': '/'.join(portal.getPhysicalPath()) + '/' + contentPath[0], 'depth': 0}
+        queryDict['portal_type'] = 'Folder'
+        brains = portal_catalog(queryDict)
+        if not brains:
+            return False
+        brain = brains[0]
+        navtreeProps = getToolByName(context, 'portal_properties').navtree_properties
+        if not brain.meta_type in navtreeProps.metaTypesNotToList and \
+           (brain.review_state in navtreeProps.wf_states_to_show or
+            not navtreeProps.enable_wf_state_filtering) and \
+           not brain.id in navtreeProps.idsNotToList:
+            return True
+        return False
 
 
 def getNavigationRoot(context):
