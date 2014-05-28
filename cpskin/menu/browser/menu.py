@@ -55,6 +55,8 @@ def invalidate_menu_dependencies():
 
 def invalidate_menu(context):
     request = getRequest()
+    if request is None:  # when plone site is created
+        request = context.REQUEST
     viewlet = CpskinMenuViewlet(context, request, None, None)
     key = "{0}:{1}".format(
         cached_method_id,

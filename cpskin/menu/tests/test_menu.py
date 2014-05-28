@@ -107,3 +107,15 @@ class TestMenu(unittest.TestCase):
         invalidate_menu(commune)
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 2)
+
+    def test_objet_modification_invalidates_menu(self):
+        item = self.portal.restrictedTraverse('commune/services_communaux')
+        viewlet = CpskinMenuViewlet(item, self.request, None, None)
+        viewlet.update()
+        self.assertEqual(get_cache_miss(), 0)
+        viewlet.superfish_portal_tabs()
+        self.assertEqual(get_cache_miss(), 1)
+        item.setTitle('Test Cache Invalidation')
+        item.processForm()
+        viewlet.superfish_portal_tabs()
+        self.assertEqual(get_cache_miss(), 2)

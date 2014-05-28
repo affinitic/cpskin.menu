@@ -36,4 +36,25 @@
     layer="..interfaces.ICpskinMenuLayer"
     />
 
+  <!-- Content modified -->
+  <subscriber
+     handler=".subscribers.content_modified"
+     for="Products.CMFCore.interfaces.IContentish
+          OFS.interfaces.IObjectClonedEvent"
+     />
+  <subscriber
+     handler=".subscribers.content_modified"
+     for="Products.CMFCore.interfaces.IContentish
+          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+     />
+  <subscriber
+     handler=".subscribers.content_modified"
+     for="Products.CMFCore.interfaces.IFolderish
+          OFS.interfaces.IObjectClonedEvent"
+     />
+  <subscriber
+     handler=".subscribers.content_modified"
+     for="Products.CMFCore.interfaces.IFolderish
+          zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+     />
 </configure>
