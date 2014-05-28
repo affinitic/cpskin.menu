@@ -1,0 +1,9 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="plone">
+   <include package="z3c.unconfigure" file="meta.zcml" />
+   <include file="configure.zcml"/>
+   <unconfigure>
+     <utility provides="lovely.memcached.interfaces.IMemcachedClient"
+              factory="affinitic.caching.memcached.memcachedClient" />
+   </unconfigure>
+</configure>

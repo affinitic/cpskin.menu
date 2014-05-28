@@ -10,6 +10,8 @@
   <five:registerPackage package="." initialize=".initialize" />
   <include package=".browser"/>
   <include package="cpskin.locales" />
+  <include package="affinitic.caching" />
+  <includeOverrides package="affinitic.caching" file="overrides.zcml"/>
 
   <genericsetup:registerProfile
       name="default"

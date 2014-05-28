@@ -42,6 +42,7 @@ setup(name='cpskin.menu',
           'cpskin.locales',
           'collective.superfish',
           'z3c.jbot',
+          'affinitic.caching'
           # -*- Extra requirements: -*-
       ],
       extras_require={
@@ -49,7 +50,7 @@ setup(name='cpskin.menu',
               'plone.api',
               'plone.app.robotframework',
               'plone.app.testing',
+              'z3c.unconfigure'
           ]
       },
-      entry_points={},
-)
+      entry_points={})
