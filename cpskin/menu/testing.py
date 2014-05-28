@@ -3,6 +3,7 @@
 from Products.CMFCore.utils import getToolByName
 from plone import api
 from plone.testing import z2
+from plone.app.testing import IntegrationTesting
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import PloneWithPackageLayer
 from plone.app.testing import applyProfile
@@ -152,9 +153,12 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
 
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(
     name="CPSKIN_MENU_FIXTURE",
-    zcml_filename="configure.zcml",
+    zcml_filename="testing.zcml",
     zcml_package=cpskin.menu)
 
+CPSKIN_MENU_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(CPSKIN_MENU_FIXTURE,),
+    name="cpskin.menu:Integration")
 
 CPSKIN_MENU_ROBOT_TESTING = FunctionalTesting(
     bases=(CPSKIN_MENU_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE,
