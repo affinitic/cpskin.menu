@@ -109,7 +109,7 @@
         hoverClass  : 'sfHover',
         pathClass   : 'overideThisToUse',
         pathLevels  : 1,
-        delay       : 800,
+        delay       : 0,
         animation   : {opacity:'show'},
         animationOut: {opacity:'hide'},
         speed       : 'normal',
