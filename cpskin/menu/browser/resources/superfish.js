@@ -131,13 +131,17 @@
                 not = (o.retainPath===true) ? o.$path : '';
             o.retainPath = false;
             var $ul = $('li.'+o.hoverClass,this).add(this).not(not)
-                    .find('>ul').stop().animate(o.animationOut,o.speedOut,function(){
+                    .find('>ul');
+            // Do not hide if it is still animating ( showing for example )
+            if ($ul.filter(':animated').length<1) {
+                $ul.stop().animate(o.animationOut,o.speedOut,function(){
                         $ul = $(this);
                         $ul.css('visibility','hidden').parent().removeClass(o.hoverClass);
                         o.onHide.call($ul);
                         //$$.children('a').data('follow', false);
                         $$.find('> span a').data('follow', false);
                     });
+            }
             return this;
         },
         showSuperfishUl : function(){
