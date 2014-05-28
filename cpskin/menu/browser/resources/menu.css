@@ -93,7 +93,7 @@ ul.navTreeLevel1.has_direct_access > li {
     display:none;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 600px) {
     #advanced-breadcrumbs,
     #mobile-first-level-wrapper{
         display:block;
@@ -105,6 +105,14 @@ ul.navTreeLevel1.has_direct_access > li {
     }
    #portal-top{
        font-size:100%;
+   }
+   /* Hide mobile nav from Plone, we have our own */
+   #portal-header #navWrapper {
+       display: none !important;
+   }
+   /* Hide personal tools */
+   #portal-personaltools-wrapper {
+       display: none !important;
    }
    #portal-logo{
        display:block !important;
