@@ -104,5 +104,6 @@ class TestMenu(unittest.TestCase):
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 1)
         invalidate_menu(commune)
+        invalidate_menu(commune)
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 2)
