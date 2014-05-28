@@ -218,16 +218,14 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 submenu=submenu_render)
 
         menus = {}
-        # We do not need to calculate menu if not in a theme view
-        if not self._is_in_theme():
-            return menus
 
         self.mobile = False
         self.menu_id = 'portal-globalnav-cpskinmenu'
 
         tabindex = self._calculate_tabindex()
 
-        if self.data:
+        # We do not need to calculate menu if not in a theme view
+        if self.data and self._is_in_theme:
             menus['desktop'] = submenu(
                 self.data['children'],
                 tabindex,
