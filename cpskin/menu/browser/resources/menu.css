@@ -86,6 +86,10 @@ ul.navTreeLevel1.has_direct_access > li {
     display:none;
 }
 
+.advb-submenu li{
+    display:inline-block;
+}
+
 #mobnav-btn,
 #advanced-breadcrumbs,
 #mobile-first-level-wrapper,
