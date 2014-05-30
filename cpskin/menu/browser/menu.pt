@@ -5,7 +5,7 @@
     i18n:domain="cpskin.menu"
     tal:omit-tag="">
 
-<h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Sections</h5>
+<h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Navigation</h5>
 <ul tal:condition="not:view/is_homepage"
     tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
 
