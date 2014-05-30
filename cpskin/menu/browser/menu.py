@@ -80,7 +80,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
     _menu_item = u"""<li id="%(menu_id)s-%(id)s"%(classnames)s><span%(selected)s><a href="%(url)s" title="%(description)s" id="%(id)s" tabindex="%(tabindex)s">%(title)s</a></span>%(submenu)s</li>"""
 
     # this template is used to generate a menu container
-    _submenu_item = u"""<ul%(id)s class="%(classname)s">%(menuitems)s</ul>"""
+    _submenu_item = u"""<ul%(id)s class="%(classname)s">%(close)s%(menuitems)s</ul>"""
 
     def _get_real_context(self):
         context = self.context
@@ -135,7 +135,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
 
-        def submenu(items, tabindex, menu_level=0, menu_classnames=''):
+        def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False):
             i = 0
             s = []
 
@@ -157,12 +157,18 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 if not menu_level:
                     menu_id = self.menu_id and u" id=\"%s\"" % (self.menu_id) or u""
 
-            return self._submenu_item % dict(
+            submenu = u""
+            close = u""
+            if close_button and menu_level == 1:
+                close = """<img src="++resource++cpskin.menu.resources/close.png" class="navTreeClose" />"""
+            submenu = self._submenu_item % dict(
                 id=menu_id,
                 menuitems=u"".join(s),
                 classname=u"navTreeLevel%d %s" % (
-                    menu_level, menu_classnames)
+                    menu_level, menu_classnames),
+                close=close,
             )
+            return submenu
 
         def menuitem(item, tabindex, first=False, last=False, menu_level=0):
             classes = []
@@ -220,18 +226,21 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                         normal_children,
                         tabindex,
                         menu_level=menu_level + 1,
-                        menu_classnames='has_direct_access') or u""
+                        menu_classnames='has_direct_access',
+                        close_button=False) or u""
                     submenu_render += submenu(
                         direct_access,
                         tabindex,
                         menu_level=menu_level + 1,
-                        menu_classnames='direct_access') or u""
+                        menu_classnames='direct_access',
+                        close_button=True) or u""
                 else:
                     submenu_render = submenu(
                         children,
                         tabindex,
                         menu_level=menu_level + 1,
-                        menu_classnames='no_direct_access') or u""
+                        menu_classnames='no_direct_access',
+                        close_button=True) or u""
             elif menu_level == fourth_menu_level:
                 if IDirectAccess.providedBy(item['item'].getObject()):
                     submenu_render = u""
@@ -241,14 +250,16 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                         submenu_render = submenu(
                             children,
                             tabindex,
-                            menu_level=menu_level + 1) or u""
+                            menu_level=menu_level + 1,
+                            close_button=True) or u""
                     else:
                         submenu_render = u""
             else:
                 submenu_render = submenu(
                     children,
                     tabindex,
-                    menu_level=menu_level + 1) or u""
+                    menu_level=menu_level + 1,
+                    close_button=True) or u""
 
             return self._menu_item % dict(
                 menu_id=self.menu_id,
@@ -274,7 +285,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             menus['desktop'] = submenu(
                 self.data['children'],
                 tabindex,
-                menu_classnames=u"sf-menu"
+                menu_classnames=u"sf-menu",
+                close_button=True,
             )
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
@@ -282,7 +294,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             menus['mobile'] = submenu(
                 self.data_mobile['children'],
                 tabindex,
-                menu_classnames=u"sf-menu-mobile"
+                menu_classnames=u"sf-menu-mobile",
+                close_button=False,
             )
         return menus
 

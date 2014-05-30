@@ -98,6 +98,13 @@ li.sfHover >span >a{
     color: #FFFFFF;
 }
 
+.navTreeClose {
+    float: right;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 600px) {
     #advanced-breadcrumbs,
     #mobile-first-level-wrapper{
