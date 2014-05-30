@@ -3,11 +3,13 @@ from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
-from Products.statusmessages.interfaces import IStatusMessage
+from plone import api
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.interface import noLongerProvides
+
+from cpskin.locales import CPSkinMessageFactory as _
 
 from cpskin.menu.interfaces import IDirectAccess
 from cpskin.menu.interfaces import IDirectAccessView
@@ -23,7 +25,9 @@ class DirectAccessView(BrowserView):
         """
         if self.request:
             if msg:
-                IStatusMessage(self.request).addStatusMessage(msg, type='info')
+                api.portal.show_message(message=msg,
+                                        request=self.request,
+                                        type='info')
             self.request.response.redirect(self.context.absolute_url())
         return msg
 
@@ -71,7 +75,7 @@ class DirectAccessView(BrowserView):
         alsoProvides(context, IDirectAccess)
         catalog = getToolByName(context, 'portal_catalog')
         catalog.reindexObject(context)
-        self._redirect()
+        self._redirect(_(u'Content added to direct access menu'))
 
     def disable_direct_access(self):
         """ Disable the direct access """
@@ -79,4 +83,4 @@ class DirectAccessView(BrowserView):
         noLongerProvides(context, IDirectAccess)
         catalog = getToolByName(context, 'portal_catalog')
         catalog.reindexObject(context)
-        self._redirect()
+        self._redirect(_(u'Content removed from direct access menu'))

@@ -2,11 +2,13 @@ from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
 from Products.Five.browser import BrowserView
-from Products.statusmessages.interfaces import IStatusMessage
+from plone import api
 from zope.component import getMultiAdapter
 from zope.interface import alsoProvides
 from zope.interface import implements
 from zope.interface import noLongerProvides
+
+from cpskin.locales import CPSkinMessageFactory as _
 
 from cpskin.menu.interfaces import IFourthLevelNavigation
 from cpskin.menu.interfaces import IMultiLevelNavigationView
@@ -22,7 +24,9 @@ class MultiLevelNavigationView(BrowserView):
         """
         if self.request:
             if msg:
-                IStatusMessage(self.request).addStatusMessage(msg, type='info')
+                api.portal.show_message(message=msg,
+                                        request=self.request,
+                                        type='info')
             self.request.response.redirect(self.context.absolute_url())
         return msg
 
@@ -68,10 +72,10 @@ class MultiLevelNavigationView(BrowserView):
         """ Enable the 4th level navigation """
         context = self._get_real_context()
         alsoProvides(context, IFourthLevelNavigation)
-        self._redirect()
+        self._redirect(_(u'4th level navigation enabled on content'))
 
     def disable_fourth_level(self):
         """ Disable the 4th level navigation """
         context = self._get_real_context()
         noLongerProvides(context, IFourthLevelNavigation)
-        self._redirect()
+        self._redirect(_(u'4th level navigation disabled on content'))
