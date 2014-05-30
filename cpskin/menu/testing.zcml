@@ -1,7 +1,17 @@
 <configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
            i18n_domain="plone">
    <include package="z3c.unconfigure" file="meta.zcml" />
    <include file="configure.zcml"/>
+
+  <genericsetup:registerProfile
+      name="testing"
+      title="cpskin.menu"
+      directory="profiles/testing"
+      description="Installs the cpskin.menu package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
    <unconfigure>
      <utility provides="lovely.memcached.interfaces.IMemcachedClient"
               factory="affinitic.caching.memcached.memcachedClient" />

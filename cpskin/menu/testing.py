@@ -46,7 +46,7 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
     """
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'cpskin.menu:default')
+        applyProfile(portal, 'cpskin.menu:testing')
         catalog = getToolByName(portal, 'portal_catalog')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
@@ -154,7 +154,8 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(
     name="CPSKIN_MENU_FIXTURE",
     zcml_filename="testing.zcml",
-    zcml_package=cpskin.menu)
+    zcml_package=cpskin.menu,
+    gs_profile_id="cpskin.menu:testing")
 
 CPSKIN_MENU_INTEGRATION_TESTING = IntegrationTesting(
     bases=(CPSKIN_MENU_FIXTURE,),

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<metadata>
+  <dependencies>
+   <dependency>profile-Products.CMFPlone:plone</dependency>
+   <dependency>profile-Products.CMFPlone:plone-content</dependency>
+   <dependency>profile-Products.CMFPlone:testfixture</dependency>
+   <dependency>profile-cpskin.menu:default</dependency>
+  </dependencies>
+</metadata>
