@@ -6,6 +6,7 @@ from affinitic.caching.memcached import invalidate_key
 from Acquisition import aq_inner, aq_parent
 
 from plone import api
+from plone.uuid.interfaces import IUUID
 from plone.app.layout.viewlets import common
 from plone.app.layout.navigation.navtree import buildFolderTree
 
@@ -15,7 +16,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneSiteRoot
-
+from plone.memoize.volatile import DontCache
 from cpskin.menu.interfaces import IDirectAccess
 
 from zope.i18n import translate
@@ -26,19 +27,26 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
 
 
 def cache_key(meth, viewlet):
-    key = "menu.{0}".format(viewlet.navigation_root_path)
+    obj_id = IUUID(viewlet._get_real_context(), None)
+    if obj_id is None:
+        raise DontCache()
+    key = "menu.{0}".format(obj_id)
     return key
 
+
+def get_menu_dependencies(meth, viewlet):
+    key = "menu.{0}".format(viewlet.navigation_root_path)
+    return key
 
 cached_method_id = 'cpskin.menu.browser.menu.superfish_portal_tabs'
 
 
-def invalidate_menu_dependencies():
+def invalidate_menu_dependencies(meth, viewlet):
     if queryUtility(IMemcachedClient) is None:
         return  # functionality only available with memcached
     key = "{0}:{1}".format(
         cached_method_id,
-        'menu')
+        get_menu_dependencies(meth, viewlet))
     invalidate_key(cached_method_id, key)
 
 
@@ -47,11 +55,15 @@ def invalidate_menu(context):
     if request is None:  # when plone site is created
         request = context.REQUEST
     viewlet = CpskinMenuViewlet(context, request, None, None)
-    key = "{0}:{1}".format(
-        cached_method_id,
-        cache_key(viewlet.superfish_portal_tabs, viewlet))
-    invalidate_key(cached_method_id, key)
-    invalidate_menu_dependencies()
+    try:
+        key = "{0}:{1}".format(
+            cached_method_id,
+            cache_key(viewlet.superfish_portal_tabs, viewlet))
+        invalidate_key(cached_method_id, key)
+    except DontCache:
+        pass
+    else:
+        invalidate_menu_dependencies(viewlet.superfish_portal_tabs, viewlet)
 
 
 class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
@@ -119,11 +131,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
-    @cache(cache_key, dependencies=['menu'])
+    @cache(cache_key, get_dependencies=get_menu_dependencies)
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
-
         def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False):
             i = 0
             s = []

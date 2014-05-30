@@ -2,6 +2,8 @@
 import unittest2 as unittest
 from zope.component import getUtility
 from zope.ramcache.interfaces.ram import IRAMCache
+from plone.uuid.interfaces import IUUID
+from plone import api
 from cpskin.menu.testing import CPSKIN_MENU_INTEGRATION_TESTING
 from cpskin.menu.browser.menu import (CpskinMenuViewlet, cache_key,
                                       invalidate_menu)
@@ -32,7 +34,7 @@ class TestMenu(unittest.TestCase):
         viewlet.update()
         key = cache_key(viewlet.superfish_portal_tabs, viewlet)
         self.assertTrue(key.startswith('menu.'))
-        self.assertTrue(key.endswith('/plone'))
+        self.assertTrue(key.endswith(IUUID(self.portal)))
 
     def test_menu_cache_key_on_communes(self):
         communes = getattr(self.portal, 'commune')
@@ -40,7 +42,7 @@ class TestMenu(unittest.TestCase):
         viewlet.update()
         key = cache_key(viewlet.superfish_portal_tabs, viewlet)
         self.assertTrue(key.startswith('menu.'))
-        self.assertTrue(key.endswith('/plone/commune'))
+        self.assertTrue(key.endswith(IUUID(communes)))
 
     def test_menu_cache_key_on_communes_subitem(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -48,7 +50,7 @@ class TestMenu(unittest.TestCase):
         viewlet.update()
         key = cache_key(viewlet.superfish_portal_tabs, viewlet)
         self.assertTrue(key.startswith('menu.'))
-        self.assertTrue(key.endswith('/plone/commune'))
+        self.assertTrue(key.endswith(IUUID(item)))
 
     def test_menu_cache_usage_test_fail(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -71,12 +73,12 @@ class TestMenu(unittest.TestCase):
         viewlet = CpskinMenuViewlet(item, self.request, None, None)
         viewlet.update()
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 1)
+        self.assertEqual(get_cache_miss(), 2)
         item = self.portal.restrictedTraverse('loisirs')
         viewlet = CpskinMenuViewlet(item, self.request, None, None)
         viewlet.update()
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 2)
+        self.assertEqual(get_cache_miss(), 3)
 
     def test_menu_cache_invalidation(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -103,7 +105,6 @@ class TestMenu(unittest.TestCase):
         invalidate_menu(loisirs)
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 1)
-        invalidate_menu(commune)
         invalidate_menu(commune)
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 2)
