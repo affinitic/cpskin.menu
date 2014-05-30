@@ -11,6 +11,8 @@
   <include package=".browser"/>
   <include package="cpskin.locales" />
   <include package="affinitic.caching" />
+  <utility provides="affinitic.caching.interfaces.IMemcachedDefaultNameSpace"
+           component=".cache.getPloneSiteMemcachedDefaultNameSpace"/>
 
   <genericsetup:registerProfile
       name="default"
