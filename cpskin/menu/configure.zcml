@@ -9,6 +9,7 @@
   <include package="z3c.jbot" file="meta.zcml" />
   <five:registerPackage package="." initialize=".initialize" />
   <include package=".browser"/>
+  <include file="subscribers.zcml"/>
   <include package="cpskin.locales" />
   <include package="affinitic.caching" />
   <utility provides="affinitic.caching.interfaces.IMemcachedDefaultNameSpace"
