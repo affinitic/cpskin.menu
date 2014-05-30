@@ -75,6 +75,3 @@ class MultiLevelNavigationView(BrowserView):
         context = self._get_real_context()
         noLongerProvides(context, IFourthLevelNavigation)
         self._redirect()
-
-    def __call__(self):
-        return self.is_fourth_level_nav_enabled(self.context)

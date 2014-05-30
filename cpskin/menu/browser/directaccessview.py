@@ -80,6 +80,3 @@ class DirectAccessView(BrowserView):
         catalog = getToolByName(context, 'portal_catalog')
         catalog.reindexObject(context)
         self._redirect()
-
-    def __call__(self):
-        return self.is_forth_level_nav_enabled(self.context)
