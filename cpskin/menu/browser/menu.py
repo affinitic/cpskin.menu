@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter, queryUtility
-from zope.component.hooks import getSite
 from zope.globalrequest import getRequest
 from affinitic.caching.memcached import invalidate_key
 
@@ -9,7 +8,6 @@ from Acquisition import aq_inner, aq_parent
 from plone import api
 from plone.app.layout.viewlets import common
 from plone.app.layout.navigation.navtree import buildFolderTree
-from plone.uuid.interfaces import IUUID
 
 from lovely.memcached.interfaces import IMemcachedClient
 from affinitic.caching import cache
@@ -28,18 +26,9 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
 
 
 def cache_key(meth, viewlet):
-    portal = getSite()
-    key = "menu.{0}.{1}".format(
-        IUUID(portal),
-        viewlet.navigation_root_path)
+    key = "menu.{0}".format(viewlet.navigation_root_path)
     return key
 
-
-def dependencies_keys(meth=None, self=None):
-    portal = getSite()
-    key = "menu.{0}".format(
-        IUUID(portal))
-    return [key]
 
 cached_method_id = 'cpskin.menu.browser.menu.superfish_portal_tabs'
 
@@ -49,7 +38,7 @@ def invalidate_menu_dependencies():
         return  # functionality only available with memcached
     key = "{0}:{1}".format(
         cached_method_id,
-        dependencies_keys())
+        'menu')
     invalidate_key(cached_method_id, key)
 
 
@@ -130,7 +119,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
-    @cache(cache_key, get_dependencies=dependencies_keys)
+    @cache(cache_key, dependencies=['menu'])
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
