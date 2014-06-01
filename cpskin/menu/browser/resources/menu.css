@@ -68,7 +68,7 @@
     background-color: red;
     float: right;
     left: 75%;
-    width: 25%;
+    width: 25% !important;
 }
 
 .sf-menu ul.navTreeLevel1,
