@@ -159,9 +159,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
             submenu = u""
             close = u""
-            portalUrl = api.portal.get().absolute_url()
             if close_button and menu_level == 1:
-                close = """<img src="%s/++resource++cpskin.menu.resources/close.png" class="navTreeClose" />""" % portalUrl
+                close = """<span class="icon-cancel-circled2 navTreeClose" />"""
             submenu = self._submenu_item % dict(
                 id=menu_id,
                 menuitems=u"".join(s),
