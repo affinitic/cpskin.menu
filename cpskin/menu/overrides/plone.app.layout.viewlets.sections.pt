@@ -6,15 +6,18 @@
     <ul id="portal-globalnav"
         tal:define="selected_tab python:view.selected_portal_tab"
         ><tal:tabs tal:repeat="tab portal_tabs"
-        ><li tal:define="tid tab/id"
+        ><li tal:define="tid tab/id;
+                         index repeat/tab/index;
+                         themeclass string:theme${index};
+                         selectedclass python:selected_tab==tid and 'selected' or 'plain'"
              tal:attributes="id string:portaltab-${tid};
-                            class python:selected_tab==tid and 'selected' or 'plain'"
+                            class string:${themeclass} ${selectedclass}"
             ><a href=""
                tal:content="tab/name"
                tal:attributes="href tab/url;
                                title tab/description|nothing;
                                target tab/link_target|nothing;
-                               tabindex repeat/tab/index">
+                               tabindex index">
             Tab Name
             </a></li></tal:tabs></ul>
 </tal:sections>
