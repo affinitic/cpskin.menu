@@ -159,7 +159,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
             submenu = u""
             close = u""
-            if close_button and menu_level == 1:
+            if not self.mobile and close_button and menu_level == 1:
                 close = """<span class="icon-cancel-circled2 navTreeClose" />"""
             submenu = self._submenu_item % dict(
                 id=menu_id,
