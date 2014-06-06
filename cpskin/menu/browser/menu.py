@@ -16,6 +16,7 @@ from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.utils import safe_unicode
 from Products.CMFPlone.interfaces import IPloneSiteRoot
+from plone.memoize import view
 from plone.memoize.volatile import DontCache
 from cpskin.menu.interfaces import IDirectAccess
 
@@ -83,6 +84,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
     # this template is used to generate a menu container
     _submenu_item = u"""<ul%(id)s class="%(classname)s">%(close)s%(menuitems)s</ul>"""
 
+    @view.memoize
     def _get_real_context(self):
         context = self.context
         plone_view = getMultiAdapter((context, self.request), name="plone")
@@ -106,7 +108,9 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         self.current_url = context_state.current_page_url()
         self.site_url = portal_state.portal_url()
         context = self._get_real_context()
-        self.navigation_root_path = '/'.join(context.getPhysicalPath()[:3])
+        root_path = api.portal.get_navigation_root(context).getPhysicalPath()
+        nav_start_level = len(root_path) + 1
+        self.navigation_root_path = '/'.join(context.getPhysicalPath()[:nav_start_level])
         self.mobile_navigation_root_path = portal_state.navigation_root_path()
 
     def _build_navtree(self, navigation_root, depth):
