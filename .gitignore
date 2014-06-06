@@ -20,3 +20,7 @@ var/
 include/
 lib/
 local/
+selenium-screenshot*.png
+report.html
+output.xml
+log.html
