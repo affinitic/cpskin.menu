@@ -139,12 +139,13 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
-        def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False):
+        def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
             i = 0
             s = []
 
-            # exclude nav items
-            items = [item for item in items if not item['item'].exclude_from_nav]
+            # exclude nav items for non direct access
+            if not direct_access:
+                items = [item for item in items if not item['item'].exclude_from_nav]
 
             if not items:
                 return ''
@@ -237,7 +238,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                         tabindex,
                         menu_level=menu_level + 1,
                         menu_classnames='direct_access',
-                        close_button=True) or u""
+                        close_button=True,
+                        direct_access=True) or u""
                 else:
                     submenu_render = submenu(
                         children,
