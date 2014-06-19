@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_inner
 from Acquisition import aq_parent
@@ -48,8 +49,10 @@ class MultiLevelNavigationView(BrowserView):
         sm = getSecurityManager()
         if not sm.checkPermission("Portlets: Manage portlets", context):
             return False
-
-        depth = len(context.getPhysicalPath()[2:])
+        contextPhyPath = context.getPhysicalPath()
+        portalPhyPath = api.portal.get().getPhysicalPath()
+        path = [elem for elem in list(contextPhyPath) if elem not in list(portalPhyPath)]
+        depth = len(path)
         if depth == 3 and not IFourthLevelNavigation.providedBy(context):
             return True
         else:
