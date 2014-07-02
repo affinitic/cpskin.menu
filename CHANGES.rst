@@ -1,8 +1,8 @@
 Changelog
 =========
 
-0.1 (unreleased)
-------------------
+0.1 (2014-07-02)
+----------------
 
 - Change desktop menu behaviour. [giacomos]
 - Change mobile menu behaviour clicking on third level. [lucabel]
