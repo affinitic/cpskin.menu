@@ -76,6 +76,7 @@
 .sf-menu ul.navTreeLevel3
 {
     display: none;
+    visibility: hidden;
 }
 
 .sf-menu ul.navTreeLevel1,
