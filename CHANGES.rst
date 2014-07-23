@@ -4,7 +4,7 @@ Changelog
 0.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Add a vocabulary for the last level navigation [mpeeters]
 
 
 0.1 (2014-07-02)
