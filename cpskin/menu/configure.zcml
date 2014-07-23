@@ -38,4 +38,7 @@
       directory="overrides"
       layer=".interfaces.ICpskinMenuLayer" />
 
+  <utility component=".vocabulary.LastLevelMenuVocabularyFactory"
+           name="cpskin.menu.vocabularies.lastlevelnavigation" />
+
 </configure>
