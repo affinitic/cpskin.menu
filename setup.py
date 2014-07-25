@@ -47,10 +47,11 @@ setup(name='cpskin.menu',
       ],
       extras_require={
           'test': [
+              'Mock',
               'plone.api',
               'plone.app.robotframework',
               'plone.app.testing',
-              'z3c.unconfigure'
+              'z3c.unconfigure',
           ]
       },
       entry_points={})

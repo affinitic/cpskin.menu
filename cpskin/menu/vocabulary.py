@@ -22,11 +22,12 @@ class LastLevelMenuVocabulary(object):
     implements(IVocabularyFactory)
 
     def __call__(self, context, query=None):
-        result = [(b.getPath(), b.getObject()) for b in self.nav_brains]
+        self.context = context
+        result = [(b.getPath(), b.getObject()) for b in self.get_brains()]
         filtered_result = [(p, o) for p, o in sorted(result, reverse=True)
                            if self.is_last_level(p, o)]
         items = [
-            SimpleTerm(p, b2a_qp(safe_encode(o.title)), safe_unicode(o.title))
+            SimpleTerm(p, b2a_qp(safe_encode(p)), safe_unicode(o.title))
             for p, o in filtered_result
             if query is None or safe_encode(query) in safe_encode(o.title)
         ]
@@ -35,15 +36,19 @@ class LastLevelMenuVocabulary(object):
 
     def is_last_level(self, path, obj):
         paths = path.split('/')[1:]
-        if len(paths) == 4 and not IFourthLevelNavigation.providedBy(obj):
+        min_lvl, max_lvl = self.get_min_max_lvl()
+        if len(paths) == min_lvl and not IFourthLevelNavigation.providedBy(obj):
             return True
-        elif len(paths) == 5:
+        elif len(paths) == max_lvl:
             if IFourthLevelNavigation.providedBy(obj.aq_parent):
                 return True
         return False
 
-    @property
-    def nav_brains(self):
+    def get_min_max_lvl(self):
+        root_path = api.portal.get().getPhysicalPath()
+        return (len(root_path) + 2, len(root_path) + 3)
+
+    def get_brains(self):
         catalog = api.portal.get_tool('portal_catalog')
         navtree_props = api.portal.get_tool('portal_properties').navtree_properties
         portal = api.portal.get()
