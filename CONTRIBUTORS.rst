@@ -1,3 +1,8 @@
 - Laurent Lasudry, Original Author [Affinitic]
+- Luca Bellenghi [RedTurtle]
 - François Bruynbroeck [Affinitic]
+- Martin Peeters [Affinitic]
+- Jean-François Roche [Affinitic]
 - Gillian Sampont [Affinitic]
+- Giacomo Spettoli [RedTurtle]
+- Benoît Suttor [IMIO]
