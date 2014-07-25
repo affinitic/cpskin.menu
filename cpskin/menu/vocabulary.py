@@ -23,13 +23,15 @@ class LastLevelMenuVocabulary(object):
 
     def __call__(self, context, query=None):
         self.context = context
-        result = [(b.getPath(), b.getObject()) for b in self.get_brains()]
-        filtered_result = [(p, o) for p, o in sorted(result, reverse=True)
+        result = [(b.getObject(), b.getPath()) for b in self.get_brains()]
+        filtered_result = [(o.title, p) for o, p
+                           in sorted(result, reverse=True)
                            if self.is_last_level(p, o)]
+        sorted_result = sorted(filtered_result)
         items = [
-            SimpleTerm(p, b2a_qp(safe_encode(p)), safe_unicode(o.title))
-            for p, o in filtered_result
-            if query is None or safe_encode(query) in safe_encode(o.title)
+            SimpleTerm(path, b2a_qp(safe_encode(path)), safe_unicode(title))
+            for title, path in sorted_result
+            if query is None or safe_encode(query) in safe_encode(title)
         ]
 
         return SimpleVocabulary(items)

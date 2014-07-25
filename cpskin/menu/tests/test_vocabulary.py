@@ -48,7 +48,7 @@ class TestVocabulary(unittest.TestCase):
         voc = self.vocabulary_factory(self.portal)
         expected_values = [u'Promenades', u'Bibliothèques', u'Yoyo', u'Tata',
                            u'Rockers', u'Cinema', u'Abba', u'Finances']
-        self.assertListEqual(expected_values, [t.title for t in voc])
+        self.assertListEqual(sorted(expected_values), [t.title for t in voc])
 
     def test_duplicate_title(self):
         brains = [FakeBrain('/plone/1/2/apple-1', 'apple-1', u'Apple'),
