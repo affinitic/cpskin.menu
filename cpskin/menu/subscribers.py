@@ -5,5 +5,9 @@ from cpskin.menu.browser.menu import invalidate_menu
 
 
 def content_modified(content, event):
+    try:
+        content.getId()
+    except AttributeError:
+        return
     if IUUID(getSite(), None) is not None:
         invalidate_menu(content)
