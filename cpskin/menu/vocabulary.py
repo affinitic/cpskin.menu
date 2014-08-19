@@ -27,6 +27,9 @@ class LastLevelMenuVocabulary(object):
         filtered_result = [(o.title, p) for o, p
                            in sorted(result, reverse=True)
                            if self.is_last_level(p, o)]
+        categories = [(b.getObject(), b.getPath()) for b in self.get_categories()]
+        sorted_cat = [(o.title, p) for o, p in sorted(categories, reverse=True)]
+        filtered_result = filtered_result + sorted_cat
         sorted_result = sorted(filtered_result)
         items = [
             SimpleTerm(path, b2a_qp(safe_encode(path)), safe_unicode(title))
@@ -63,7 +66,22 @@ class LastLevelMenuVocabulary(object):
             query_dict['review_state'] = navtree_props.wf_states_to_show
 
         brains = catalog(query_dict)
+
         return [b for b in brains if b.id not in navtree_props.idsNotToList]
+
+    def get_categories(self):
+        """
+        category, from collective.directory are also considered as last level
+        """
+        catalog = api.portal.get_tool('portal_catalog')
+        navtree_props = api.portal.get_tool('portal_properties').navtree_properties
+        query_dict = {'portal_type': 'collective.directory.category'}
+        if navtree_props.enable_wf_state_filtering:
+            query_dict['review_state'] = navtree_props.wf_states_to_show
+
+        brains = catalog(query_dict)
+        return [b for b in brains if b.id not in navtree_props.idsNotToList]
+
 
 
 LastLevelMenuVocabularyFactory = LastLevelMenuVocabulary()
