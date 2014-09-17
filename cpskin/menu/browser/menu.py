@@ -152,148 +152,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         return self.superfish_portal_tabs_child(child_id)
 
     def superfish_portal_tabs_child(self, child_id):
-        def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
-            i = 0
-            s = []
-
-            # exclude nav items for non direct access
-            if not direct_access:
-                items = [item for item in items if not item['item'].exclude_from_nav]
-
-            if not items:
-                return ''
-
-            for item in items:
-                first = (i == 0)
-                i += 1
-                last = (i == len(items))
-
-                s.append(menuitem(item, tabindex, first, last, menu_level))
-
-            menu_id = u""
-            if self.menu_id:
-                if not menu_level:
-                    menu_id = self.menu_id and u" id=\"%s\"" % (self.menu_id) or u""
-
-            submenu = u""
-            close = u""
-            if not self.mobile and close_button and menu_level == 1:
-                close = """<span class="icon-cancel-circled2 navTreeClose" />"""
-            submenu = self._submenu_item % dict(
-                id=menu_id,
-                menuitems=u"".join(s),
-                classname=u"portal-globalnav-cpskinmenu navTreeLevel%d %s" % (
-                    menu_level, menu_classnames),
-                close=close,
-            )
-            return submenu
-
-        def menuitem(item, tabindex, first=False, last=False, menu_level=0):
-            classes = []
-
-            if first:
-                classes.append('firstItem')
-            if last:
-                classes.append('lastItem')
-            if item['currentParent']:
-                classes.append('navTreeItemInPath')
-
-            brain = item['item']
-
-            if type(brain) == VirtualCatalogBrain:
-                # translate our portal_actions and use their id instead of the
-                # url
-                title = translate(brain.Title, context=self.request)
-                desc = translate(brain.Description, context=self.request)
-                url = brain.url.strip(self.context.portal_url())
-                item_id = brain.id
-            else:
-                title = safe_unicode(brain.Title)
-                desc = safe_unicode(brain.Description)
-                url = brain.getPath()
-                item_id = brain.getURL()[len(self.site_url):]
-
-            item_id = item_id.strip('/').replace('/', '-')
-
-            children = item['children']
-
-            if self.mobile:
-                direct_access_level = 1
-                fourth_menu_level = 2
-            else:
-                direct_access_level = self.is_homepage and 1 or 0
-                fourth_menu_level = self.is_homepage and 2 or 1
-
-            if menu_level == direct_access_level:
-                queryDict = {}
-                queryDict['path'] = {'query': url, 'depth': 10}
-                queryDict['object_provides'] = 'cpskin.menu.interfaces.IDirectAccess'
-                catalog = getToolByName(self.context, 'portal_catalog')
-
-                direct_access_catalog = catalog(queryDict)
-                direct_access = []
-                normal_children = []
-                for child in children:
-                    normal_children.append(child)
-                for element in direct_access_catalog:
-                    direct_access.append({'item': element,
-                                          'depth': 1,
-                                          'children': [],
-                                          'currentParent': False,
-                                          'currentItem': False})
-                if direct_access:
-                    submenu_render = submenu(
-                        normal_children,
-                        tabindex,
-                        menu_level=menu_level + 1,
-                        menu_classnames='has_direct_access',
-                        close_button=False) or u""
-                    submenu_render += submenu(
-                        direct_access,
-                        tabindex,
-                        menu_level=menu_level + 1,
-                        menu_classnames='direct_access',
-                        close_button=True,
-                        direct_access=True) or u""
-                else:
-                    submenu_render = submenu(
-                        children,
-                        tabindex,
-                        menu_level=menu_level + 1,
-                        menu_classnames='no_direct_access',
-                        close_button=True) or u""
-            elif menu_level == fourth_menu_level:
-                if IDirectAccess.providedBy(item['item'].getObject()):
-                    submenu_render = u""
-                else:
-                    helper_view = getMultiAdapter((item['item'].getObject(), self.request), name=u'multilevel-navigation')
-                    if helper_view.is_enabled:
-                        submenu_render = submenu(
-                            children,
-                            tabindex,
-                            menu_level=menu_level + 1,
-                            close_button=True) or u""
-                    else:
-                        submenu_render = u""
-            else:
-                submenu_render = submenu(
-                    children,
-                    tabindex,
-                    menu_level=menu_level + 1,
-                    close_button=True) or u""
-
-            return self._menu_item % dict(
-                menu_id=self.menu_id,
-                id=item_id,
-                tabindex=tabindex,
-                level=menu_level,
-                title=self.html_escape(title),
-                description=self.html_escape(desc),
-                url=item['item'].getURL(),
-                classnames=len(classes) and u' class="%s"' % (" ".join(classes)) or u"",
-                selected=item['currentItem'] and u' class="selected"' or u"",
-                submenu=submenu_render)
-
         menus = {}
 
         self.mobile = False
@@ -307,8 +165,8 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             for item in self.data['children']:
                 item_id = item['item'].id
                 self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
-                if (child_id == None) or (item_id == child_id):
-                    menus['desktop'][item_id] = submenu(
+                if (child_id is None) or (item_id == child_id):
+                    menus['desktop'][item_id] = self._submenu(
                         item['children'],
                         tabindex,
                         menu_classnames=u"sf-menu",
@@ -318,13 +176,155 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
         if self.data_mobile:
-            menus['mobile'] = submenu(
+            menus['mobile'] = self._submenu(
                 self.data_mobile['children'],
                 tabindex,
                 menu_classnames=u"sf-menu-mobile",
                 close_button=False,
             )
         return menus
+
+    def _submenu(self, items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
+        i = 0
+        s = []
+
+        # exclude nav items for non direct access
+        if not direct_access:
+            items = [item for item in items if not item['item'].exclude_from_nav]
+
+        if not items:
+            return ''
+
+        for item in items:
+            first = (i == 0)
+            i += 1
+            last = (i == len(items))
+
+            s.append(self._menuitem(item, tabindex, first, last, menu_level))
+
+        menu_id = u""
+        if self.menu_id:
+            if not menu_level:
+                menu_id = self.menu_id and u" id=\"%s\"" % (self.menu_id) or u""
+
+        submenu = u""
+        close = u""
+        if not self.mobile and close_button and menu_level == 1:
+            close = """<span class="icon-cancel-circled2 navTreeClose" />"""
+        submenu = self._submenu_item % dict(
+            id=menu_id,
+            menuitems=u"".join(s),
+            classname=u"portal-globalnav-cpskinmenu navTreeLevel%d %s" % (
+                menu_level, menu_classnames),
+            close=close,
+        )
+        return submenu
+
+    def _menuitem(self, item, tabindex, first=False, last=False, menu_level=0):
+        classes = []
+
+        if first:
+            classes.append('firstItem')
+        if last:
+            classes.append('lastItem')
+        if item['currentParent']:
+            classes.append('navTreeItemInPath')
+
+        brain = item['item']
+
+        if type(brain) == VirtualCatalogBrain:
+            # translate our portal_actions and use their id instead of the
+            # url
+            title = translate(brain.Title, context=self.request)
+            desc = translate(brain.Description, context=self.request)
+            url = brain.url.strip(self.context.portal_url())
+            item_id = brain.id
+        else:
+            title = safe_unicode(brain.Title)
+            desc = safe_unicode(brain.Description)
+            url = brain.getPath()
+            item_id = brain.getURL()[len(self.site_url):]
+
+        item_id = item_id.strip('/').replace('/', '-')
+
+        children = item['children']
+
+        if self.mobile:
+            direct_access_level = 1
+            fourth_menu_level = 2
+        else:
+            direct_access_level = self.is_homepage and 1 or 0
+            fourth_menu_level = self.is_homepage and 2 or 1
+
+        if menu_level == direct_access_level:
+            queryDict = {}
+            queryDict['path'] = {'query': url, 'depth': 10}
+            queryDict['object_provides'] = 'cpskin.menu.interfaces.IDirectAccess'
+            catalog = getToolByName(self.context, 'portal_catalog')
+
+            direct_access_catalog = catalog(queryDict)
+            direct_access = []
+            normal_children = []
+            for child in children:
+                normal_children.append(child)
+            for element in direct_access_catalog:
+                direct_access.append({'item': element,
+                                      'depth': 1,
+                                      'children': [],
+                                      'currentParent': False,
+                                      'currentItem': False})
+            if direct_access:
+                submenu_render = self._submenu(
+                    normal_children,
+                    tabindex,
+                    menu_level=menu_level + 1,
+                    menu_classnames='has_direct_access',
+                    close_button=False) or u""
+                submenu_render += self._submenu(
+                    direct_access,
+                    tabindex,
+                    menu_level=menu_level + 1,
+                    menu_classnames='direct_access',
+                    close_button=True,
+                    direct_access=True) or u""
+            else:
+                submenu_render = self._submenu(
+                    children,
+                    tabindex,
+                    menu_level=menu_level + 1,
+                    menu_classnames='no_direct_access',
+                    close_button=True) or u""
+        elif menu_level == fourth_menu_level:
+            if IDirectAccess.providedBy(item['item'].getObject()):
+                submenu_render = u""
+            else:
+                helper_view = getMultiAdapter((item['item'].getObject(), self.request), name=u'multilevel-navigation')
+                if helper_view.is_enabled:
+                    submenu_render = self._submenu(
+                        children,
+                        tabindex,
+                        menu_level=menu_level + 1,
+                        close_button=True) or u""
+                else:
+                    submenu_render = u""
+        else:
+            submenu_render = self._submenu(
+                children,
+                tabindex,
+                menu_level=menu_level + 1,
+                close_button=True) or u""
+
+        return self._menu_item % dict(
+            menu_id=self.menu_id,
+            id=item_id,
+            tabindex=tabindex,
+            level=menu_level,
+            title=self.html_escape(title),
+            description=self.html_escape(desc),
+            url=item['item'].getURL(),
+            classnames=len(classes) and u' class="%s"' % (" ".join(classes)) or u"",
+            selected=item['currentItem'] and u' class="selected"' or u"",
+            submenu=submenu_render)
 
     def _calculate_tabindex(self):
         """
@@ -369,10 +369,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             return False
         brain = brains[0]
         navtreeProps = getToolByName(context, 'portal_properties').navtree_properties
-        if not brain.meta_type in navtreeProps.metaTypesNotToList and \
+        if brain.meta_type not in navtreeProps.metaTypesNotToList and \
            (brain.review_state in navtreeProps.wf_states_to_show or
             not navtreeProps.enable_wf_state_filtering) and \
-           not brain.id in navtreeProps.idsNotToList:
+           brain.id not in navtreeProps.idsNotToList:
             return True
         return False
 
