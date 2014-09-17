@@ -33,7 +33,7 @@
 .portal-globalnav-cpskinmenu-tabs li a,
 .portal-globalnav-cpskinmenu li a
 {
-    display: block;
+    display: block !important;
     padding: 0.5em 1em 1.7em;
     white-space: normal;
 }
