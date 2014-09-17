@@ -6,7 +6,7 @@
     tal:omit-tag="">
 
 <h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Navigation</h5>
-<ul tal:replace="structure python: view.superfish_portal_tabs().get('gillian').get('desktop','')" />
+<ul tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
 
 <a href="#" id="search-btn"></a>
 <div id="mobnav-btn">Menu de navigation</div>
