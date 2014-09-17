@@ -6,35 +6,40 @@
     display: none;
 }
 
-#portal-globalnav-cpskinmenu .selected a,
-#portal-globalnav-cpskinmenu-tabs .selected a,
-#portal-globalnav-cpskinmenu .navTreeItemInPath > span a
+.portal-globalnav-cpskinmenu
+{
+    display: none;
+}
+
+.portal-globalnav-cpskinmenu .selected a,
+.portal-globalnav-cpskinmenu-tabs .selected a,
+.portal-globalnav-cpskinmenu .navTreeItemInPath > span a
 {
     text-decoration: underline;
 }
 
-#portal-globalnav-cpskinmenu a:hover,
-#portal-globalnav-cpskinmenu-tabs a:hover
+.portal-globalnav-cpskinmenu a:hover,
+.portal-globalnav-cpskinmenu-tabs a:hover
 {
     background: none repeat scroll 0 0 #205C90;
     color: #FFFFFF;
 }
 
-#portal-globalnav-cpskinmenu-tabs
+.portal-globalnav-cpskinmenu-tabs
 {
     margin-bottom: 1px;
 }
 
-#portal-globalnav-cpskinmenu-tabs li a,
-#portal-globalnav-cpskinmenu li a
+.portal-globalnav-cpskinmenu-tabs li a,
+.portal-globalnav-cpskinmenu li a
 {
     display: block;
     padding: 0.5em 1em 1.7em;
     white-space: normal;
 }
 
-#portal-globalnav-cpskinmenu-tabs li,
-#portal-globalnav-cpskinmenu li
+.portal-globalnav-cpskinmenu-tabs li,
+.portal-globalnav-cpskinmenu li
 {
     display: inline-block;
     width: 25%;
@@ -103,6 +108,160 @@
 .sf-menu ul.navTreeLevel3
 {
     left: 0;
+}
+
+@media screen and (max-width: 600px)
+{
+    #advanced-breadcrumbs
+    {
+        font-size: 120%;
+    }
+
+    #advanced-breadcrumbs .advb-submenu
+    {
+        cursor: pointer;
+    }
+
+    #advanced-breadcrumbs .nofollow::after
+    {
+        content: "»";
+    }
+
+    #advanced-breadcrumbs li.selected,
+     #advanced-breadcrumbs span.selected
+    {
+        border-bottom: 1px dotted #444;
+    }
+
+    #advanced-breadcrumbs,
+     #mobile-first-level-wrapper
+    {
+        display: block;
+    }
+
+    #mobnav-btn
+    {
+        background-color: #205c90;
+        color: white;
+        cursor: pointer;
+        display: block;
+        font-size: 20px;
+        font-weight: bold;
+        margin: 5px 0px;
+        padding: 10px;
+    }
+
+    #portal-globalnav,
+     .portal-globalnav-cpskinmenu-tabs,
+     .portal-globalnav-cpskinmenu
+    {
+        display: none;
+    }
+
+    #portal-header #navWrapper
+    {
+        display: none !important;
+    }
+
+    #portal-header #portal-searchbox
+    {
+        display: none;
+    }
+
+    #portal-header #search-btn
+    {
+        background: url("++resource++cpskin.menu.resources/search.png") no-repeat scroll left top rgba(0, 0, 0, 0);
+        display: block;
+        float: right;
+        font-size: 1px;
+        height: 32px;
+        margin-right: 5px;
+        margin-top: 5px;
+        width: 32px;
+    }
+
+    #portal-logo
+    {
+        display: block !important;
+        float: none !important;
+    }
+
+    #portal-personaltools-wrapper
+    {
+        display: none !important;
+    }
+
+    #portal-top
+    {
+        font-size: 100%;
+    }
+
+    .advb-submenu
+    {
+        margin-bottom: 0.3em;
+        margin-top: 0.3em;
+    }
+
+    .advb-submenu ul
+    {
+        margin: 5px;
+    }
+
+    .advb-submenu ul li
+    {
+        margin-right: 1em;
+    }
+
+    .advb-title
+    {
+        background-color: #205c90;
+        color: #fff;
+        display: inline;
+        padding: 0px 5px;
+        position: relative;
+    }
+
+    .mobile-overlay-search .pb-ajax > div
+    {
+        font-size: 170%;
+        width: 83%;
+    }
+
+    .mobile-overlay-search .searchButton
+    {
+        display: block !important;
+    }
+
+    div#mobile-first-level-wrapper
+    {
+        background-color: #205c90;
+        display: none;
+        font-size: 120%;
+        margin-top: 2px;
+        padding: 0.5em;
+    }
+
+    div#mobile-first-level-wrapper a
+    {
+        color: #FFF !important;
+    }
+
+    div#mobile-first-level-wrapper li
+    {
+        border-bottom: 1px solid #FFF;
+        margin-bottom: 0.3em;
+    }
+
+    div.mobile-overlay-search
+    {
+        width: 100%;
+    }
+
+    ul.mobile-first-level li
+    {
+        display: block;
+    }
+
 }
 
 li.sfHover >span >a

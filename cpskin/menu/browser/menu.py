@@ -108,9 +108,11 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         self.current_url = context_state.current_page_url()
         self.site_url = portal_state.portal_url()
         context = self._get_real_context()
-        root_path = api.portal.get_navigation_root(context).getPhysicalPath()
-        nav_start_level = len(root_path) + 1
-        self.navigation_root_path = '/'.join(context.getPhysicalPath()[:nav_start_level])
+
+        self.root_path = api.portal.get_navigation_root(context).getPhysicalPath()
+        self.nav_start_level = len(self.root_path)
+        self.physical_path = context.getPhysicalPath()
+        self.navigation_root_path = '/'.join(self.physical_path[:self.nav_start_level])
         self.mobile_navigation_root_path = portal_state.navigation_root_path()
 
     def _build_navtree(self, navigation_root, depth):
@@ -128,17 +130,33 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         super(CpskinMenuViewlet, self).update()
         # Why different depth in desktop and mobile?
         self.data = self._build_navtree(self.navigation_root_path,
-                                        depth=self.menu_depth - 1)
+                                        depth=self.menu_depth)
         self.data_mobile = self._build_navtree(self.mobile_navigation_root_path,
                                                depth=self.menu_depth)
 
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
+    # XXX attention à la cache si on met un paramètre non obligatoire?
     @cache(cache_key, get_dependencies=get_menu_dependencies)
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
+
+        if self.physical_path == self.root_path:
+            raise 'Menu in root folder not working, need to receive the child_id by some way'
+        child_id = self.physical_path[self.nav_start_level]
+
+#         for item in self.data['children']:
+#             if item['item'].id == child_id:
+#                 self.data = item
+#                 break
+
+        menu = {'gillian': self.superfish_portal_tabs_child('gillian'),
+                'menu': self.superfish_portal_tabs_child('menu')}
+        return menu
+
+    def superfish_portal_tabs_child(self, child_id):
         def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
             i = 0
             s = []
@@ -169,7 +187,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             submenu = self._submenu_item % dict(
                 id=menu_id,
                 menuitems=u"".join(s),
-                classname=u"navTreeLevel%d %s" % (
+                classname=u"portal-globalnav-cpskinmenu navTreeLevel%d %s" % (
                     menu_level, menu_classnames),
                 close=close,
             )
@@ -192,10 +210,12 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 # url
                 title = translate(brain.Title, context=self.request)
                 desc = translate(brain.Description, context=self.request)
+                url = brain.url.strip(self.context.portal_url())
                 item_id = brain.id
             else:
                 title = safe_unicode(brain.Title)
                 desc = safe_unicode(brain.Description)
+                url = brain.getPath()
                 item_id = brain.getURL()[len(self.site_url):]
 
             item_id = item_id.strip('/').replace('/', '-')
@@ -211,7 +231,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
             if menu_level == direct_access_level:
                 queryDict = {}
-                queryDict['path'] = {'query': item['item'].getPath(), 'depth': 10}
+                queryDict['path'] = {'query': url, 'depth': 10}
                 queryDict['object_provides'] = 'cpskin.menu.interfaces.IDirectAccess'
                 catalog = getToolByName(self.context, 'portal_catalog')
 
@@ -282,18 +302,24 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         menus = {}
 
         self.mobile = False
-        self.menu_id = 'portal-globalnav-cpskinmenu'
 
         tabindex = self._calculate_tabindex()
 
         # We do not need to calculate menu if not in a theme view
         if self.data and self._is_in_theme:
-            menus['desktop'] = submenu(
-                self.data['children'],
-                tabindex,
-                menu_classnames=u"sf-menu",
-                close_button=True,
-            )
+            menus['desktop'] = {}
+
+            for item in self.data['children']:
+                item_id = item['item'].id
+                self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
+                menus['desktop'][item_id] = submenu(
+                    item['children'],
+                    tabindex,
+                    menu_classnames=u"sf-menu",
+                    close_button=True,
+                )
+
+
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
         if self.data_mobile:
