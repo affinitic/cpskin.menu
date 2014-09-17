@@ -143,18 +143,13 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
 
-        if self.physical_path == self.root_path:
-            raise 'Menu in root folder not working, need to receive the child_id by some way'
-        child_id = self.physical_path[self.nav_start_level]
+        child_id = None
 
-#         for item in self.data['children']:
-#             if item['item'].id == child_id:
-#                 self.data = item
-#                 break
+        # Need to get only child menu if we are not in root
+        if self.physical_path != self.root_path:
+            child_id = self.physical_path[self.nav_start_level]
 
-        menu = {'gillian': self.superfish_portal_tabs_child('gillian'),
-                'menu': self.superfish_portal_tabs_child('menu')}
-        return menu
+        return self.superfish_portal_tabs_child(child_id)
 
     def superfish_portal_tabs_child(self, child_id):
         def submenu(items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
@@ -312,13 +307,13 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             for item in self.data['children']:
                 item_id = item['item'].id
                 self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
-                menus['desktop'][item_id] = submenu(
-                    item['children'],
-                    tabindex,
-                    menu_classnames=u"sf-menu",
-                    close_button=True,
-                )
-
+                if (child_id == None) or (item_id == child_id):
+                    menus['desktop'][item_id] = submenu(
+                        item['children'],
+                        tabindex,
+                        menu_classnames=u"sf-menu",
+                        close_button=True,
+                    )
 
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
