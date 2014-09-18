@@ -4,7 +4,7 @@ Changelog
 0.3 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Move media menu.css in menu_mobile.css [FBruynbroeck]
 
 
 0.2 (2014-08-21)

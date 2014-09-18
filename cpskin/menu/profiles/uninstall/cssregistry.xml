@@ -4,5 +4,8 @@
     <stylesheet id="++resource++cpskin.menu.resources/menu.css"
         remove="True"
         />
+    <stylesheet id="++resource++cpskin.menu.resources/menu_mobile.css"
+        remove="True"
+        />
 
 </object>
