@@ -1,9 +1,5 @@
 $( document ).ready(function() {
 
-    $('ul.sf-menu-active').each(function(){
-        $(this).show();
-    });
-
     $('#portal-globalnav li:not(.menutools-item):not(#portaltab-index_html) a').each(function(){
         $(this).click(function() {
 

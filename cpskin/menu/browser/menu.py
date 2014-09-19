@@ -137,7 +137,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
-    # XXX attention à la cache si on met un paramètre non obligatoire?
     @cache(cache_key, get_dependencies=get_menu_dependencies)
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
