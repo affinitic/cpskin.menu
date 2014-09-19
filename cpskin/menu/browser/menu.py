@@ -165,13 +165,19 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             for item in self.data['children']:
                 item_id = item['item'].id
                 self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
-                if (child_id is None) or (item_id == child_id):
-                    menus['desktop'][item_id] = self._submenu(
-                        item['children'],
-                        tabindex,
-                        menu_classnames=u"sf-menu",
-                        close_button=True,
-                    )
+
+                # Allow to set menu visible
+                if item_id == child_id:
+                    menu_classnames = u"sf-menu sf-menu-active"
+                else:
+                    menu_classnames = u"sf-menu"
+
+                menus['desktop'][item_id] = self._submenu(
+                    item['children'],
+                    tabindex,
+                    menu_classnames=menu_classnames,
+                    close_button=True,
+                )
 
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
