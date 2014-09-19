@@ -13,7 +13,7 @@
 
     <javascript id="++resource++cpskin.menu.resources/cpskin_menu.js"
                 cacheable="True" compression="safe" cookable="True"
-                enabled="True" expression="" inline="False"
+                enabled="True" expression="python:portal.portal_registry['cpskin.core.interfaces.ICPSkinSettings.load_page_menu']" inline="False"
                 />
 
     <javascript id="++resource++cpskin.menu.resources/modernizr.min.js"
