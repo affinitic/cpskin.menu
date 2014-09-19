@@ -9,6 +9,10 @@
         remove="True"
         />
 
+    <javascript id="++resource++cpskin.menu.resources/cpskin_menu.js"
+        remove="True"
+        />
+
     <javascript id="++resource++cpskin.menu.resources/modernizr.min.js"
         remove="True"
         />
