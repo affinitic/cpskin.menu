@@ -159,7 +159,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
         # We do not need to calculate menu if not in a theme view
         if self.data and self._is_in_theme:
-            menus['desktop'] = {}
+            menus['desktop'] = u""
 
             for item in self.data['children']:
                 item_id = item['item'].id
@@ -171,7 +171,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
                 else:
                     menu_classnames = u"sf-menu"
 
-                menus['desktop'][item_id] = self._submenu(
+                menus['desktop'] += self._submenu(
                     item['children'],
                     tabindex,
                     menu_classnames=menu_classnames,

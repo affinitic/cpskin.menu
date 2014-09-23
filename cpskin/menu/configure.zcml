@@ -11,6 +11,7 @@
   <include package=".browser"/>
   <include file="subscribers.zcml"/>
   <include package="cpskin.locales" />
+  <include package="cpskin.core" />
   <include package="affinitic.caching" />
   <utility provides="affinitic.caching.interfaces.IMemcachedDefaultNameSpace"
            component=".cache.getPloneSiteMemcachedDefaultNameSpace"/>
