@@ -258,7 +258,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             direct_access_level = 1
             fourth_menu_level = 2
         else:
-            direct_access_level = self.is_homepage and 1 or 0
+            direct_access_level = 0
             fourth_menu_level = self.is_homepage and 2 or 1
 
         if menu_level == direct_access_level:
