@@ -9,7 +9,7 @@ import unittest
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTests([
-        layered(robotsuite.RobotTestSuite('robot_load_page/test_mobile.robot'),
+        layered(robotsuite.RobotTestSuite('robot_load_page'),
                 layer=CPSKIN_MENU_ROBOT_TESTING_LOAD_PAGE),
     ])
     return suite

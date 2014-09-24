@@ -13,7 +13,6 @@ Test Teardown  Close all browsers
 
 
 Test direct access visibility
-    Pause
     Click LOISIRS menu
 
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
