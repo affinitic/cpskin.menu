@@ -13,7 +13,9 @@ Test Teardown  Close all browsers
 
 
 Test direct access visibility
-    Click Element  css=li#portaltab-loisirs
+    Click LOISIRS menu
+    Pause
+
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
     # Direct access visible
@@ -24,10 +26,18 @@ Test direct access visibility
     Element Should Not Be Visible  css=ul.direct_access a#loisirs-tourisme-promenades
 
 Test direct access link
-    Click Element  css=li#portaltab-loisirs
+    Click LOISIRS menu
+
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
     Click Element       css=ul.direct_access a#loisirs-art_et_culture-artistes-rockers-john_lennon
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/rockers/john_lennon
 
+
 *** Keywords ***
+
+
+Click LOISIRS menu
+    Element Should Be Visible  css=li#portaltab-loisirs a
+    Click Element              css=li#portaltab-loisirs a
+    Location Should Be         http://localhost:55001/plone
