@@ -6,6 +6,14 @@ Introduction
 Menu package for cpskin
 
 
+Warning
+=======
+
+This package depends on cpskin.theme but does not install the theme automatically except in tests.
+
+You better have to install the cpskin.theme via "control panel/theme"
+
+
 Tests
 =====
 
