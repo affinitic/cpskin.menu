@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from zope.component import queryUtility
+from zope.interface import alsoProvides
 from Products.CMFCore.utils import getToolByName
+
 from plone import api
 from plone.testing import z2
 from plone.app.testing import IntegrationTesting
@@ -12,7 +15,7 @@ from plone.app.testing import (login,
                                setRoles,
                                TEST_USER_ID)
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
-from zope.interface import alsoProvides
+from plone.registry.interfaces import IRegistry
 
 from cpskin.menu.interfaces import IFourthLevelNavigation, IDirectAccess
 
@@ -45,11 +48,17 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
                     `-- 5: Kinepolis
     """
 
+    load_page_menu = False
+
     def setUpPloneSite(self, portal):
         applyProfile(portal, 'cpskin.menu:testing')
         catalog = getToolByName(portal, 'portal_catalog')
         setRoles(portal, TEST_USER_ID, ['Manager'])
         login(portal, TEST_USER_NAME)
+
+        registry = queryUtility(IRegistry)
+        registry.records['cpskin.core.interfaces.ICPSkinSettings.load_page_menu'].value = self.load_page_menu
+
         commune = api.content.create(
             type='Folder',
             title='COMMUNE',
@@ -151,17 +160,35 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
         catalog.reindexObject(john_lennon)
 
 
+class CPSkinMenuLoadPage(CPSkinMenuPloneWithPackageLayer):
+
+    load_page_menu = True
+
+
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(
     name="CPSKIN_MENU_FIXTURE",
     zcml_filename="testing.zcml",
     zcml_package=cpskin.menu,
     gs_profile_id="cpskin.menu:testing")
 
+CPSKIN_MENU_FIXTURE_LOAD_PAGE = CPSkinMenuLoadPage(
+    name="CPSKIN_MENU_FIXTURE_LOAD_PAGE",
+    zcml_filename="testing.zcml",
+    zcml_package=cpskin.menu,
+    gs_profile_id="cpskin.menu:testing")
+
+
 CPSKIN_MENU_INTEGRATION_TESTING = IntegrationTesting(
     bases=(CPSKIN_MENU_FIXTURE,),
     name="cpskin.menu:Integration")
 
+
 CPSKIN_MENU_ROBOT_TESTING = FunctionalTesting(
     bases=(CPSKIN_MENU_FIXTURE, AUTOLOGIN_LIBRARY_FIXTURE,
+           z2.ZSERVER_FIXTURE),
+    name="cpskin.menu:Robot")
+
+CPSKIN_MENU_ROBOT_TESTING_LOAD_PAGE = FunctionalTesting(
+    bases=(CPSKIN_MENU_FIXTURE_LOAD_PAGE, AUTOLOGIN_LIBRARY_FIXTURE,
            z2.ZSERVER_FIXTURE),
     name="cpskin.menu:Robot")
