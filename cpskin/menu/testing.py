@@ -191,4 +191,4 @@ CPSKIN_MENU_ROBOT_TESTING = FunctionalTesting(
 CPSKIN_MENU_ROBOT_TESTING_LOAD_PAGE = FunctionalTesting(
     bases=(CPSKIN_MENU_FIXTURE_LOAD_PAGE, AUTOLOGIN_LIBRARY_FIXTURE,
            z2.ZSERVER_FIXTURE),
-    name="cpskin.menu:Robot")
+    name="cpskin.menu:Robot load page")
