@@ -41,6 +41,7 @@ setup(name='cpskin.menu',
           'Plone',
           'cpskin.core',
           'cpskin.locales',
+          'cpskin.theme',
           'collective.superfish',
           'z3c.jbot',
           'affinitic.caching'

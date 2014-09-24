@@ -4,6 +4,7 @@
    <include package="z3c.unconfigure" file="meta.zcml" />
    <include file="meta.zcml"/>
    <include package="cpskin.core" file="testing.zcml"/>
+   <include package="cpskin.theme" file="testing.zcml"/>
 
   <genericsetup:registerProfile
       name="testing"

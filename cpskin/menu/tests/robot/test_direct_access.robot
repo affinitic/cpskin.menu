@@ -13,7 +13,7 @@ Test Teardown  Close all browsers
 
 
 Test direct access visibility
-    Click Link     LOISIRS
+    Click Element  css=li#portaltab-loisirs
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
     # Direct access visible
@@ -24,7 +24,7 @@ Test direct access visibility
     Element Should Not Be Visible  css=ul.direct_access a#loisirs-tourisme-promenades
 
 Test direct access link
-    Click Link     LOISIRS
+    Click Element  css=li#portaltab-loisirs
     Click Element  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
     Click Element       css=ul.direct_access a#loisirs-art_et_culture-artistes-rockers-john_lennon

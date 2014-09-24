@@ -6,6 +6,7 @@
 
   <include package="cpskin.locales" />
   <include package="cpskin.core" />
+  <include package="cpskin.theme" />
   <include package="affinitic.caching" />
 
 </configure>
