@@ -9,7 +9,7 @@ Test Teardown  Close all browsers
 *** Variables ***
 
 
-*** Test cases ***
+*** Test Cases ***
 
 
 Test menu
@@ -93,6 +93,10 @@ Test fourth level navigation folder not working in wrong place
     Location Should Be  http://localhost:55001/plone/loisirs/art_et_culture/artistes/cinema
 
     Page Should Contain  Kinepolis
+
+Test menu visible when location is subfolder
+    Go To  http://localhost:55001/plone/loisirs/art_et_culture
+    Element Should Be Visible  css=ul.navTreeLevel0 a#loisirs-art_et_culture
 
 
 *** Keywords ***
