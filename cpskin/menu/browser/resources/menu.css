@@ -6,6 +6,11 @@
     display: none;
 }
 
+#portal-globalnav .activated
+{
+    background-color: #93b5bc;
+}
+
 .portal-globalnav-cpskinmenu
 {
     display: none;
