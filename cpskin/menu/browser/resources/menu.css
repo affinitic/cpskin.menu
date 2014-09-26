@@ -63,11 +63,6 @@
     right: 0;
 }
 
-.sf-menu .navTreeItemInPath ul.navTreeLevel1
-{
-    display: inherit;
-}
-
 .sf-menu ul.direct_access
 {
     background-color: red;
