@@ -113,7 +113,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         self.nav_start_level = len(self.root_path)
         self.physical_path = context.getPhysicalPath()
         self.navigation_root_path = '/'.join(self.physical_path[:self.nav_start_level])
-        self.mobile_navigation_root_path = portal_state.navigation_root_path()
 
     def _build_navtree(self, navigation_root, depth):
         # we generate our navigation out of the sitemap. so we can use the
@@ -131,8 +130,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         # Why different depth in desktop and mobile?
         self.data = self._build_navtree(self.navigation_root_path,
                                         depth=self.menu_depth)
-        self.data_mobile = self._build_navtree(self.mobile_navigation_root_path,
-                                               depth=self.menu_depth)
 
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
@@ -180,9 +177,9 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
-        if self.data_mobile:
+        if self.data:
             menus['mobile'] = self._submenu(
-                self.data_mobile['children'],
+                self.data['children'],
                 tabindex,
                 menu_classnames=u"sf-menu-mobile",
                 close_button=False,
