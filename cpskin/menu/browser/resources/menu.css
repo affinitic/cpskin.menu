@@ -155,7 +155,7 @@
      .portal-globalnav-cpskinmenu-tabs,
      .portal-globalnav-cpskinmenu
     {
-        display: none;
+        display: none !important;
     }
 
     #portal-header #navWrapper
