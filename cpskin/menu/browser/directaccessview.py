@@ -11,6 +11,7 @@ from zope.interface import noLongerProvides
 
 from cpskin.locales import CPSkinMessageFactory as _
 
+from cpskin.menu.browser.menu import invalidate_menu
 from cpskin.menu.interfaces import IDirectAccess
 from cpskin.menu.interfaces import IDirectAccessView
 
@@ -76,6 +77,7 @@ class DirectAccessView(BrowserView):
         catalog = getToolByName(context, 'portal_catalog')
         catalog.reindexObject(context)
         self._redirect(_(u'Content added to direct access menu'))
+        invalidate_menu(context)
 
     def disable_direct_access(self):
         """ Disable the direct access """
@@ -84,3 +86,4 @@ class DirectAccessView(BrowserView):
         catalog = getToolByName(context, 'portal_catalog')
         catalog.reindexObject(context)
         self._redirect(_(u'Content removed from direct access menu'))
+        invalidate_menu(context)

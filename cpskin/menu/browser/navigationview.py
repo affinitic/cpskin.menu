@@ -11,6 +11,7 @@ from zope.interface import noLongerProvides
 
 from cpskin.locales import CPSkinMessageFactory as _
 
+from cpskin.menu.browser.menu import invalidate_menu
 from cpskin.menu.interfaces import IFourthLevelNavigation
 from cpskin.menu.interfaces import IMultiLevelNavigationView
 
@@ -76,9 +77,11 @@ class MultiLevelNavigationView(BrowserView):
         context = self._get_real_context()
         alsoProvides(context, IFourthLevelNavigation)
         self._redirect(_(u'4th level navigation enabled on content'))
+        invalidate_menu(context)
 
     def disable_fourth_level(self):
         """ Disable the 4th level navigation """
         context = self._get_real_context()
         noLongerProvides(context, IFourthLevelNavigation)
         self._redirect(_(u'4th level navigation disabled on content'))
+        invalidate_menu(context)
