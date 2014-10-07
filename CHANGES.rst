@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3 (unreleased)
+0.3 (2014-10-07)
 ----------------
 
 - Remove MenuTools viewlet (affinitic #6023)
