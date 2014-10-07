@@ -4,6 +4,7 @@ Changelog
 0.3 (unreleased)
 ----------------
 
+- Remove MenuTools viewlet (affinitic #6023)
 - Remove » in menu (affinitic #6025)
 - Move media menu.css in menu_mobile.css [FBruynbroeck]
 

@@ -1,10 +1,10 @@
 $( document ).ready(function() {
 
     // Add 'activated' class to menu already loaded
-    $('#portal-globalnav li.selected:not(.menutools-item):not(#portaltab-index_html) a').addClass('activated');
+    $('#portal-globalnav li.selected:not(#portaltab-index_html) a').addClass('activated');
 
     // Toggle between menu clicked
-    var clickable_menu_selector = '#portal-globalnav li:not(.menutools-item):not(#portaltab-index_html) a';
+    var clickable_menu_selector = '#portal-globalnav li:not(#portaltab-index_html) a';
     $(clickable_menu_selector).each(function(){
         $(this).click(function() {
 
