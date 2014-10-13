@@ -84,6 +84,10 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
     @view.memoize
     def _get_root_menu(self):
+        # Root menu is plone site if normal menu
+        if not self._is_load_page_menu():
+            return api.portal.get()
+
         context = self._get_real_context()
         while 1:
             if '/'.join(context.aq_parent.getPhysicalPath()) == self.navigation_root_path:
@@ -388,9 +392,15 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         return False
 
     def render(self):
-        if '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path:
+        # Do not render menu at root page in load_page_menu mode
+        if self._is_load_page_menu() \
+                and '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path:
             return ''
         return super(CpskinMenuViewlet, self).render()
+
+    def _is_load_page_menu(self):
+        portal_registry = getToolByName(self.context, 'portal_registry')
+        return portal_registry['cpskin.core.interfaces.ICPSkinSettings.load_page_menu']
 
 
 def getNavigationRoot(context):
