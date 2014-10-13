@@ -28,7 +28,7 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
 
 
 def cache_key(meth, viewlet):
-    obj_id = IUUID(viewlet._get_real_context(), None)
+    obj_id = IUUID(viewlet._get_root_menu(), None)
     if obj_id is None:
         raise DontCache()
     key = "menu.{0}".format(obj_id)
@@ -40,15 +40,6 @@ def get_menu_dependencies(meth, viewlet):
     return key
 
 cached_method_id = 'cpskin.menu.browser.menu.superfish_portal_tabs'
-
-
-def invalidate_menu_dependencies(meth, viewlet):
-    if queryUtility(IMemcachedClient) is None:
-        return  # functionality only available with memcached
-    key = "{0}:{1}".format(
-        cached_method_id,
-        get_menu_dependencies(meth, viewlet))
-    invalidate_key(cached_method_id, key)
 
 
 def invalidate_menu(context):
@@ -63,8 +54,6 @@ def invalidate_menu(context):
         invalidate_key(cached_method_id, key)
     except DontCache:
         pass
-    else:
-        invalidate_menu_dependencies(viewlet.superfish_portal_tabs, viewlet)
 
 
 class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
@@ -91,6 +80,15 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if plone_view.isDefaultPageInFolder():
             context = aq_parent(context)
         context = aq_inner(context)
+        return context
+
+    @view.memoize
+    def _get_root_menu(self):
+        context = self._get_real_context()
+        while 1:
+            if '/'.join(context.aq_parent.getPhysicalPath()) == self.navigation_root_path:
+                break
+            context = context.aq_parent
         return context
 
     @property
@@ -388,6 +386,11 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
            brain.id not in navtreeProps.idsNotToList:
             return True
         return False
+
+    def render(self):
+        if '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path:
+            return ''
+        return super(CpskinMenuViewlet, self).render()
 
 
 def getNavigationRoot(context):
