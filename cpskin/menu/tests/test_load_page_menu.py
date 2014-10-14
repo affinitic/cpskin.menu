@@ -4,7 +4,7 @@ from zope.component import getUtility
 from zope.ramcache.interfaces.ram import IRAMCache
 from plone.uuid.interfaces import IUUID
 from plone import api
-from cpskin.menu.testing import CPSKIN_MENU_INTEGRATION_TESTING
+from cpskin.menu.testing import CPSKIN_MENU_LOAD_PAGE_INTEGRATION_TESTING
 from cpskin.menu.browser.menu import (CpskinMenuViewlet, cache_key,
                                       invalidate_menu)
 
@@ -16,7 +16,7 @@ def get_cache_miss():
 
 class TestMenu(unittest.TestCase):
 
-    layer = CPSKIN_MENU_INTEGRATION_TESTING
+    layer = CPSKIN_MENU_LOAD_PAGE_INTEGRATION_TESTING
 
     def setUp(self):
         self.portal = self.layer['portal']
@@ -42,7 +42,7 @@ class TestMenu(unittest.TestCase):
         viewlet.update()
         key = cache_key(viewlet.superfish_portal_tabs, viewlet)
         self.assertTrue(key.startswith('menu.'))
-        self.assertTrue(key.endswith(IUUID(self.portal)))
+        self.assertTrue(key.endswith(IUUID(communes)))
 
     def test_menu_cache_key_on_communes_subitem(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -51,7 +51,7 @@ class TestMenu(unittest.TestCase):
         viewlet.update()
         key = cache_key(viewlet.superfish_portal_tabs, viewlet)
         self.assertTrue(key.startswith('menu.'))
-        self.assertTrue(key.endswith(IUUID(self.portal)))
+        self.assertTrue(key.endswith(IUUID(communes)))
 
     def test_menu_cache_usage_test_fail(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -66,20 +66,24 @@ class TestMenu(unittest.TestCase):
         viewlet = CpskinMenuViewlet(item, self.request, None, None)
         viewlet.update()
         self.assertEqual(get_cache_miss(), 0)
+
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 1)
+
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 1)
+
         item = self.portal.restrictedTraverse('commune')
         viewlet = CpskinMenuViewlet(item, self.request, None, None)
         viewlet.update()
         viewlet.superfish_portal_tabs()
         self.assertEqual(get_cache_miss(), 1)
+
         item = self.portal.restrictedTraverse('loisirs')
         viewlet = CpskinMenuViewlet(item, self.request, None, None)
         viewlet.update()
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 1)
+        self.assertEqual(get_cache_miss(), 2)
 
     def test_menu_cache_invalidation(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -107,11 +111,11 @@ class TestMenu(unittest.TestCase):
         loisirs = self.portal.restrictedTraverse('loisirs')
         invalidate_menu(loisirs)
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 2)
+        self.assertEqual(get_cache_miss(), 1)
 
         invalidate_menu(commune)
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 3)
+        self.assertEqual(get_cache_miss(), 2)
 
     def test_objet_modification_invalidates_menu(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')
@@ -183,17 +187,17 @@ class TestMenu(unittest.TestCase):
         viewlet_loisirs.update()
         self.assertEqual(get_cache_miss(), 1)
         viewlet_loisirs.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 1)
+        self.assertEqual(get_cache_miss(), 2)
         viewlet_loisirs.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 1)
+        self.assertEqual(get_cache_miss(), 2)
         api.content.move(item, loisirs)
         viewlet.update()
         viewlet_loisirs.update()
-        self.assertEqual(get_cache_miss(), 1)
+        self.assertEqual(get_cache_miss(), 2)
         viewlet_loisirs.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 2)
+        self.assertEqual(get_cache_miss(), 3)
         viewlet.superfish_portal_tabs()
-        self.assertEqual(get_cache_miss(), 2)
+        self.assertEqual(get_cache_miss(), 4)
 
     def test_object_rename_invalidates_menu(self):
         item = self.portal.restrictedTraverse('commune/services_communaux')

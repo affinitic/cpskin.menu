@@ -165,6 +165,7 @@ class CPSkinMenuLoadPage(CPSkinMenuPloneWithPackageLayer):
     load_page_menu = True
 
 
+
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(
     name="CPSKIN_MENU_FIXTURE",
     zcml_filename="testing.zcml",
@@ -179,8 +180,13 @@ CPSKIN_MENU_FIXTURE_LOAD_PAGE = CPSkinMenuLoadPage(
 
 
 CPSKIN_MENU_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(CPSKIN_MENU_FIXTURE,),
-    name="cpskin.menu:Integration")
+    name="CPSKIN_MENU_INTEGRATION_TESTING",
+    bases=(CPSKIN_MENU_FIXTURE,))
+
+
+CPSKIN_MENU_LOAD_PAGE_INTEGRATION_TESTING = IntegrationTesting(
+    name="CPSKIN_MENU_LOAD_PAGE_INTEGRATION_TESTING",
+    bases=(CPSKIN_MENU_FIXTURE_LOAD_PAGE,))
 
 
 CPSKIN_MENU_ROBOT_TESTING = FunctionalTesting(

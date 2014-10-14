@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from zope.component import getMultiAdapter, queryUtility
+from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
 from affinitic.caching.memcached import invalidate_key
 
@@ -10,7 +10,6 @@ from plone.uuid.interfaces import IUUID
 from plone.app.layout.viewlets import common
 from plone.app.layout.navigation.navtree import buildFolderTree
 
-from lovely.memcached.interfaces import IMemcachedClient
 from affinitic.caching import cache
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from Products.CMFCore.utils import getToolByName
@@ -89,6 +88,12 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             return api.portal.get()
 
         context = self._get_real_context()
+
+        # Plone site root?
+        if '/'.join(context.getPhysicalPath()) == self.navigation_root_path:
+            return context
+
+        # Top level of actual submenu
         while 1:
             if '/'.join(context.aq_parent.getPhysicalPath()) == self.navigation_root_path:
                 break
