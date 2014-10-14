@@ -233,50 +233,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
             )
         return menu
 
-
-    def superfish_portal_tabs_child(self, child_id):
-        menus = {}
-
-        self.mobile = False
-
-        tabindex = self._calculate_tabindex()
-
-        # We do not need to calculate menu if not in a theme view
-        if self.data and self._is_in_theme:
-            menus['desktop'] = u""
-
-            # Do not render menu at root page in load_page_menu mode
-            if not (self._is_load_page_menu()
-                    and '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path):
-
-                for item in self.data['children']:
-                    item_id = item['item'].id
-                    self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
-
-                    # Allow to set menu visible
-                    if item_id == child_id:
-                        menu_classnames = u"sf-menu sf-menu-active"
-                    else:
-                        menu_classnames = u"sf-menu"
-
-                    menus['desktop'] += self._submenu(
-                        item['children'],
-                        tabindex,
-                        menu_classnames=menu_classnames,
-                        close_button=True,
-                    )
-
-        self.mobile = True
-        self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
-        if self.data:
-            menus['mobile'] = self._submenu(
-                self.data['children'],
-                tabindex,
-                menu_classnames=u"sf-menu-mobile",
-                close_button=False,
-            )
-        return menus
-
     def _submenu(self, items, tabindex, menu_level=0, menu_classnames='', close_button=False, direct_access=False):
         i = 0
         s = []
