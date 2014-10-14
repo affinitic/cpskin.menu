@@ -12,13 +12,13 @@
 
 
 <h5 class="hiddenStructure" i18n:domain="plone" i18n:translate="heading_sections">Navigation</h5>
-<ul tal:replace="structure python: view.superfish_portal_tabs().get('desktop','')" />
+<ul tal:replace="structure python: view.superfish_portal_tabs()" />
 
 <a href="#" id="search-btn"></a>
 <div id="mobnav-btn">Menu de navigation</div>
 <div id="mobile-first-level-wrapper"></div>
 <div id="advanced-breadcrumbs"></div>
-<ul tal:replace="structure python: view.superfish_portal_tabs().get('mobile','')" />
+<ul tal:replace="structure python: view.superfish_portal_tabs_mobile()" />
 <div class="visualClear"><!-- --></div>
 
 </html>

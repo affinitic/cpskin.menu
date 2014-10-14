@@ -26,12 +26,21 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
                                                    SuperFishViewlet)
 
 
-def cache_key(meth, viewlet):
-    obj_id = IUUID(viewlet._get_root_menu(), None)
+def cache_key(obj_id):
     if obj_id is None:
         raise DontCache()
     key = "menu.{0}".format(obj_id)
     return key
+
+
+def cache_key_desktop(meth, viewlet):
+    obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
+    return cache_key(obj_id)
+
+
+def cache_key_mobile(meth, viewlet):
+    obj_id = IUUID(viewlet._get_root_menu(mobile=True), None)
+    return cache_key(obj_id)
 
 
 def get_menu_dependencies(meth, viewlet):
@@ -49,7 +58,14 @@ def invalidate_menu(context):
     try:
         key = "{0}:{1}".format(
             cached_method_id,
-            cache_key(viewlet.superfish_portal_tabs, viewlet))
+            cache_key_desktop(viewlet.superfish_portal_tabs, viewlet))
+        invalidate_key(cached_method_id, key)
+    except DontCache:
+        pass
+    try:
+        key = "{0}:{1}".format(
+            cached_method_id,
+            cache_key_mobile(viewlet.superfish_portal_tabs, viewlet))
         invalidate_key(cached_method_id, key)
     except DontCache:
         pass
@@ -82,12 +98,16 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         return context
 
     @view.memoize
-    def _get_root_menu(self):
-        # Root menu is plone site if normal menu
-        if not self._is_load_page_menu():
-            return api.portal.get()
-
+    def _get_root_menu(self, mobile):
         context = self._get_real_context()
+
+        # Mobile menu always depend on actual context
+        if mobile:
+            return context
+
+        # Root menu is plone site if normal menu Except for mobile
+        if not self._is_load_page_menu() and not mobile:
+            return api.portal.get()
 
         # Plone site root?
         if '/'.join(context.getPhysicalPath()) == self.navigation_root_path:
@@ -141,18 +161,78 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
-    @cache(cache_key, get_dependencies=get_menu_dependencies)
+    @cache(cache_key_desktop, get_dependencies=get_menu_dependencies)
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
-
         child_id = None
 
         # Need to get only child menu if we are not in root
         if self.physical_path != self.root_path:
             child_id = self.physical_path[self.nav_start_level]
 
-        return self.superfish_portal_tabs_child(child_id)
+        return self.superfish_portal_tabs_child_desktop(child_id)
+
+    @cache(cache_key_mobile, get_dependencies=get_menu_dependencies)
+    def superfish_portal_tabs_mobile(self):
+        """We do not want to use the template-code any more.
+           Python code should speedup rendering."""
+        child_id = None
+
+        # Need to get only child menu if we are not in root
+        if self.physical_path != self.root_path:
+            child_id = self.physical_path[self.nav_start_level]
+
+        return self.superfish_portal_tabs_child_mobile(child_id)
+
+    def superfish_portal_tabs_child_desktop(self, child_id):
+        menu = u""
+
+        self.mobile = False
+
+        tabindex = self._calculate_tabindex()
+
+        # We do not need to calculate menu if not in a theme view
+        if self.data and self._is_in_theme:
+            menu = u""
+
+            # Do not render menu at root page in load_page_menu mode
+            if not (self._is_load_page_menu()
+                    and '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path):
+
+                for item in self.data['children']:
+                    item_id = item['item'].id
+                    self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
+
+                    # Allow to set menu visible
+                    if item_id == child_id:
+                        menu_classnames = u"sf-menu sf-menu-active"
+                    else:
+                        menu_classnames = u"sf-menu"
+
+                    menu += self._submenu(
+                        item['children'],
+                        tabindex,
+                        menu_classnames=menu_classnames,
+                        close_button=True,
+                    )
+        return menu
+
+    def superfish_portal_tabs_child_mobile(self, child_id):
+        menu = u""
+
+        tabindex = self._calculate_tabindex()
+        self.mobile = True
+        self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
+        if self.data:
+            menu = self._submenu(
+                self.data['children'],
+                tabindex,
+                menu_classnames=u"sf-menu-mobile",
+                close_button=False,
+            )
+        return menu
+
 
     def superfish_portal_tabs_child(self, child_id):
         menus = {}
