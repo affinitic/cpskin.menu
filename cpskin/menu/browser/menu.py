@@ -165,22 +165,26 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.data and self._is_in_theme:
             menus['desktop'] = u""
 
-            for item in self.data['children']:
-                item_id = item['item'].id
-                self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
+            # Do not render menu at root page in load_page_menu mode
+            if not (self._is_load_page_menu()
+                    and '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path):
 
-                # Allow to set menu visible
-                if item_id == child_id:
-                    menu_classnames = u"sf-menu sf-menu-active"
-                else:
-                    menu_classnames = u"sf-menu"
+                for item in self.data['children']:
+                    item_id = item['item'].id
+                    self.menu_id = 'portal-globalnav-cpskinmenu-' + item_id
 
-                menus['desktop'] += self._submenu(
-                    item['children'],
-                    tabindex,
-                    menu_classnames=menu_classnames,
-                    close_button=True,
-                )
+                    # Allow to set menu visible
+                    if item_id == child_id:
+                        menu_classnames = u"sf-menu sf-menu-active"
+                    else:
+                        menu_classnames = u"sf-menu"
+
+                    menus['desktop'] += self._submenu(
+                        item['children'],
+                        tabindex,
+                        menu_classnames=menu_classnames,
+                        close_button=True,
+                    )
 
         self.mobile = True
         self.menu_id = 'portal-globalnav-cpskinmenu-mobile'
@@ -395,13 +399,6 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
            brain.id not in navtreeProps.idsNotToList:
             return True
         return False
-
-    def render(self):
-        # Do not render menu at root page in load_page_menu mode
-        if self._is_load_page_menu() \
-                and '/'.join(self._get_real_context().getPhysicalPath()) == self.navigation_root_path:
-            return ''
-        return super(CpskinMenuViewlet, self).render()
 
     def _is_load_page_menu(self):
         portal_registry = getToolByName(self.context, 'portal_registry')
