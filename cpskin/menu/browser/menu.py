@@ -26,21 +26,21 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
                                                    SuperFishViewlet)
 
 
-def cache_key(obj_id):
+def cache_key(menu_key, obj_id):
     if obj_id is None:
         raise DontCache()
-    key = "menu.{0}".format(obj_id)
+    key = "{0}.{1}".format(menu_key, obj_id)
     return key
 
 
 def cache_key_desktop(meth, viewlet):
-    obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
-    return cache_key(obj_id)
+    obj_id = IUUID(viewlet._get_real_context(), None)
+    return cache_key('menu-desktop', obj_id)
 
 
 def cache_key_mobile(meth, viewlet):
-    obj_id = IUUID(viewlet._get_root_menu(mobile=True), None)
-    return cache_key(obj_id)
+    obj_id = IUUID(viewlet._get_real_context(), None)
+    return cache_key('menu-mobile', obj_id)
 
 
 def get_menu_dependencies(meth, viewlet):
