@@ -43,9 +43,16 @@ def cache_key_mobile(meth, viewlet):
     return cache_key('menu-mobile', obj_id)
 
 
-def get_menu_dependencies(meth, viewlet):
-    key = "menu.{0}".format(viewlet.navigation_root_path)
-    return key
+def get_menu_dependencies_desktop(meth, viewlet):
+    obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
+    key = "menu-desktop.{0}".format(obj_id)
+    return [key]
+
+
+def get_menu_dependencies_mobile(meth, viewlet):
+    obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
+    key = "menu-mobile.{0}".format(obj_id)
+    return [key]
 
 cached_method_id = 'cpskin.menu.browser.menu.superfish_portal_tabs'
 
@@ -161,7 +168,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
         if self.ADD_PORTAL_TABS and self.is_homepage:
             self._addActionsToData()
 
-    @cache(cache_key_desktop, get_dependencies=get_menu_dependencies)
+    @cache(cache_key_desktop, get_dependencies=get_menu_dependencies_desktop)
     def superfish_portal_tabs(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
@@ -173,7 +180,7 @@ class CpskinMenuViewlet(common.GlobalSectionsViewlet, SuperFishViewlet):
 
         return self.superfish_portal_tabs_child_desktop(child_id)
 
-    @cache(cache_key_mobile, get_dependencies=get_menu_dependencies)
+    @cache(cache_key_mobile, get_dependencies=get_menu_dependencies_mobile)
     def superfish_portal_tabs_mobile(self):
         """We do not want to use the template-code any more.
            Python code should speedup rendering."""
