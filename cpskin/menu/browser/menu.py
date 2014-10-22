@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope.component import getMultiAdapter
 from zope.globalrequest import getRequest
-from affinitic.caching.memcached import invalidate_key
+from affinitic.caching.memcached import invalidate_dependencies
 
 from Acquisition import aq_inner, aq_parent
 
@@ -26,6 +26,10 @@ from collective.superfish.browser.sections import (VirtualCatalogBrain,
                                                    SuperFishViewlet)
 
 
+DESKTOP_ID = 'menu-desktop'
+MOBILE_ID = 'menu-mobile'
+
+
 def cache_key(menu_key, obj_id):
     if obj_id is None:
         raise DontCache()
@@ -35,23 +39,27 @@ def cache_key(menu_key, obj_id):
 
 def cache_key_desktop(meth, viewlet):
     obj_id = IUUID(viewlet._get_real_context(), None)
-    return cache_key('menu-desktop', obj_id)
+    return cache_key(DESKTOP_ID, obj_id)
 
 
 def cache_key_mobile(meth, viewlet):
     obj_id = IUUID(viewlet._get_real_context(), None)
-    return cache_key('menu-mobile', obj_id)
+    return cache_key(MOBILE_ID, obj_id)
 
 
 def get_menu_dependencies_desktop(meth, viewlet):
+    """
+    Store the root_menu id for dependencies, so by invalidating this dependencies
+    with invalidate_dependencies, all related submenu will be invalidated
+    """
     obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
-    key = "menu-desktop.{0}".format(obj_id)
+    key = "{0}.{1}".format(DESKTOP_ID, obj_id)
     return [key]
 
 
 def get_menu_dependencies_mobile(meth, viewlet):
-    obj_id = IUUID(viewlet._get_root_menu(mobile=False), None)
-    key = "menu-mobile.{0}".format(obj_id)
+    obj_id = IUUID(viewlet._get_root_menu(mobile=True), None)
+    key = "{0}.{1}".format(MOBILE_ID, obj_id)
     return [key]
 
 cached_method_id = 'cpskin.menu.browser.menu.superfish_portal_tabs'
@@ -63,17 +71,13 @@ def invalidate_menu(context):
         request = context.REQUEST
     viewlet = CpskinMenuViewlet(context, request, None, None)
     try:
-        key = "{0}:{1}".format(
-            cached_method_id,
-            cache_key_desktop(viewlet.superfish_portal_tabs, viewlet))
-        invalidate_key(cached_method_id, key)
+        dependencies = get_menu_dependencies_desktop(viewlet.superfish_portal_tabs, viewlet)
+        invalidate_dependencies(dependencies)
     except DontCache:
         pass
     try:
-        key = "{0}:{1}".format(
-            cached_method_id,
-            cache_key_mobile(viewlet.superfish_portal_tabs, viewlet))
-        invalidate_key(cached_method_id, key)
+        dependencies = get_menu_dependencies_mobile(viewlet.superfish_portal_tabs, viewlet)
+        invalidate_dependencies(dependencies)
     except DontCache:
         pass
 
