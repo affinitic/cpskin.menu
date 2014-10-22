@@ -3,7 +3,6 @@
     i18n_domain="cpskin">
 
   <include file="meta.zcml" />
-  <includeOverrides file="overrides.zcml"/>
 
   <include package="cpskin.locales" />
   <include package="cpskin.core" />
