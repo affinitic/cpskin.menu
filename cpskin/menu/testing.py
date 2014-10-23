@@ -16,6 +16,9 @@ from plone.app.testing import (login,
                                TEST_USER_ID)
 from plone.app.robotframework.testing import AUTOLOGIN_LIBRARY_FIXTURE
 from plone.registry.interfaces import IRegistry
+from plone.memoize.interfaces import ICacheChooser
+
+from affinitic.caching.memcached import MemcacheAdapter
 
 from cpskin.menu.interfaces import IFourthLevelNavigation, IDirectAccess
 
@@ -50,7 +53,19 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
 
     load_page_menu = False
 
+    @staticmethod
+    def memcached_launched():
+        adapter = queryUtility(ICacheChooser)('cpskin.menu.browser.menu.superfish_portal_tabs')
+        if isinstance(adapter, MemcacheAdapter):
+            adapter['test_key'] = 'test_value'
+            if adapter.get('test_key'):
+                return True
+        return False
+
     def setUpPloneSite(self, portal):
+        if not self.memcached_launched():
+            raise EnvironmentError("Memcached must be launched")
+
         applyProfile(portal, 'cpskin.menu:testing')
         catalog = getToolByName(portal, 'portal_catalog')
         setRoles(portal, TEST_USER_ID, ['Manager'])
@@ -163,7 +178,6 @@ class CPSkinMenuPloneWithPackageLayer(PloneWithPackageLayer):
 class CPSkinMenuLoadPage(CPSkinMenuPloneWithPackageLayer):
 
     load_page_menu = True
-
 
 
 CPSKIN_MENU_FIXTURE = CPSkinMenuPloneWithPackageLayer(

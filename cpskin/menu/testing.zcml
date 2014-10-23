@@ -3,6 +3,7 @@
            i18n_domain="plone">
    <include package="z3c.unconfigure" file="meta.zcml" />
    <include file="meta.zcml"/>
+   <include file="overrides.zcml"/>
    <include package="cpskin.core" file="testing.zcml"/>
    <include package="cpskin.theme" file="testing.zcml"/>
 
@@ -14,8 +15,8 @@
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
-   <unconfigure>
-     <utility provides="lovely.memcached.interfaces.IMemcachedClient"
-              factory="affinitic.caching.memcached.memcachedClient" />
-   </unconfigure>
+<!--   <unconfigure>-->
+<!--     <utility provides="lovely.memcached.interfaces.IMemcachedClient"-->
+<!--              factory="affinitic.caching.memcached.memcachedClient" />-->
+<!--   </unconfigure>-->
 </configure>
