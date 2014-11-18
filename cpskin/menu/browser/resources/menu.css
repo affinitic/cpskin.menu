@@ -48,6 +48,7 @@
 {
     display: inline-block;
     width: 25%;
+    vertical-align:top;
 }
 
 #search-btn
@@ -58,6 +59,14 @@
 .advb-submenu li
 {
     display: inline-block;
+}
+
+.advb-submenu .submenu {
+    background-color: white;
+    border-radius: 5px;
+    float: left;
+    margin-left: 0;
+    clear:both;
 }
 
 .navTreeClose
