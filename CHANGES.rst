@@ -4,7 +4,7 @@ Changelog
 0.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix mobile error.
 
 
 0.3.2 (2014-10-22)
