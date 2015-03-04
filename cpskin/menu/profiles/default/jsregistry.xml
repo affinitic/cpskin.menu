@@ -16,6 +16,11 @@
                 enabled="True" expression="not:python:portal.portal_registry['cpskin.core.interfaces.ICPSkinSettings.load_page_menu']" inline="False"
                 />
 
+    <javascript id="++resource++cpskin.menu.resources/cpskin_submenu.js"
+                cacheable="True" compression="safe" cookable="True"
+                enabled="True" expression="" inline="False"
+                />
+
     <javascript id="++resource++cpskin.menu.resources/modernizr.min.js"
                 cacheable="True" compression="safe" cookable="True"
                 enabled="True" expression="" inline="False"

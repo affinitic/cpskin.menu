@@ -54,4 +54,12 @@
       handler="cpskin.menu.upgrades.upgrade_1001_to_1002"
       profile="cpskin.menu:default"/>
 
+  <genericsetup:upgradeStep
+      title="Upgrade cpskin.menu from 1002 to 1003"
+      description="Add cpskin_menu.js"
+      source="1002"
+      destination="1003"
+      handler="cpskin.menu.upgrades.upgrade_1002_to_1003"
+      profile="cpskin.menu:default"/>
+
 </configure>
