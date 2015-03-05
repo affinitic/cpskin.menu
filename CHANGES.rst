@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.3.4 (unreleased)
+0.4.0 (2015-03-05)
 ------------------
 
 - Load submenu js into javascript_registry IMIO refs #9878
