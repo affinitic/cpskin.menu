@@ -8,6 +8,14 @@ from zope.interface import implements
 from zope.schema.interfaces import IVocabularyFactory
 from zope.schema.vocabulary import SimpleTerm
 from zope.schema.vocabulary import SimpleVocabulary
+import pkg_resources
+
+try:
+    pkg_resources.get_distribution('plone.app.multilingual')
+except pkg_resources.DistributionNotFound:
+    HAS_MULTILINGUAL = False
+else:
+    HAS_MULTILINGUAL = True
 
 
 def safe_encode(term):
@@ -51,7 +59,15 @@ class LastLevelMenuVocabulary(object):
 
     def get_min_max_lvl(self):
         root_path = api.portal.get().getPhysicalPath()
+        if self._is_multilingual_site() is True:
+            return (len(root_path) + 3, len(root_path) + 4)
         return (len(root_path) + 2, len(root_path) + 3)
+
+    def _is_multilingual_site(self):
+        if HAS_MULTILINGUAL is False:
+            return False
+        catalog = api.portal.get_tool('portal_catalog')
+        return len(catalog(portal_type='LRF')) > 0
 
     def get_brains(self):
         catalog = api.portal.get_tool('portal_catalog')
@@ -81,7 +97,6 @@ class LastLevelMenuVocabulary(object):
 
         brains = catalog(query_dict)
         return [b for b in brains if b.id not in navtree_props.idsNotToList]
-
 
 
 LastLevelMenuVocabularyFactory = LastLevelMenuVocabulary()

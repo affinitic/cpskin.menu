@@ -34,9 +34,11 @@ class TestVocabulary(unittest.TestCase):
         self.portal = self.layer['portal']
         self._getPhysicalPath = self.portal.getPhysicalPath
         self._get_brains = self.vocabulary_factory.get_brains
+        self._is_multilingual = self.vocabulary_factory._is_multilingual_site
 
     def tearDown(self):
         self.vocabulary_factory.get_brains = self._get_brains
+        self.vocabulary_factory._is_multilingual_site = self._is_multilingual
         self.portal.getPhysicalPath = self._getPhysicalPath
 
     @property
@@ -63,6 +65,30 @@ class TestVocabulary(unittest.TestCase):
                   FakeBrain('/mount/plone/1/2/3/fourth', 'fourth', u'Fourth')]
         self.portal.getPhysicalPath = Mock(return_value=('', 'mount', 'plone'))
         self.vocabulary_factory.get_brains = Mock(return_value=brains)
+        voc = self.vocabulary_factory(self.portal)
+        expected_values = [u'Third', u'Fourth']
+        self.assertItemsEqual(expected_values, [t.title for t in voc])
+
+    def test_with_multilingual(self):
+        brains = [
+            FakeBrain('/plone/fr/1/2/third', 'third', u'Third'),
+            FakeBrain('/plone/fr/1/2/3/fourth', 'fourth', u'Fourth'),
+        ]
+        self.portal.getPhysicalPath = Mock(return_value=('', 'plone'))
+        self.vocabulary_factory.get_brains = Mock(return_value=brains)
+        self.vocabulary_factory._is_multilingual_site = Mock(return_value=True)
+        voc = self.vocabulary_factory(self.portal)
+        expected_values = [u'Third', u'Fourth']
+        self.assertItemsEqual(expected_values, [t.title for t in voc])
+
+    def test_with_multilingual_mountpoint(self):
+        brains = [
+            FakeBrain('/mount/plone/fr/1/2/third', 'third', u'Third'),
+            FakeBrain('/mount/plone/fr/1/2/3/fourth', 'fourth', u'Fourth'),
+        ]
+        self.portal.getPhysicalPath = Mock(return_value=('', 'mount', 'plone'))
+        self.vocabulary_factory.get_brains = Mock(return_value=brains)
+        self.vocabulary_factory._is_multilingual_site = Mock(return_value=True)
         voc = self.vocabulary_factory(self.portal)
         expected_values = [u'Third', u'Fourth']
         self.assertItemsEqual(expected_values, [t.title for t in voc])
