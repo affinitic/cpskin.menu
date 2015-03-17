@@ -72,12 +72,15 @@ class LastLevelMenuVocabulary(object):
     def get_brains(self):
         catalog = api.portal.get_tool('portal_catalog')
         navtree_props = api.portal.get_tool('portal_properties').navtree_properties
-        portal = api.portal.get()
+        path = api.portal.get().getPhysicalPath()
 
-        query_dict = {'path': {'query': '/'.join(portal.getPhysicalPath()),
+        query_dict = {'path': {'query': '/'.join(path),
                                'depth': 4},
                       'portal_type': 'Folder',
                       'is_default_page': False}
+        if self._is_multilingual_site() is True:
+            path += (self.context.language, )
+            query_dict['path']['query'] = '/'.join(path)
         if navtree_props.enable_wf_state_filtering:
             query_dict['review_state'] = navtree_props.wf_states_to_show
 
@@ -89,9 +92,13 @@ class LastLevelMenuVocabulary(object):
         """
         category, from collective.directory are also considered as last level
         """
+        path = api.portal.get().getPhysicalPath()
         catalog = api.portal.get_tool('portal_catalog')
         navtree_props = api.portal.get_tool('portal_properties').navtree_properties
         query_dict = {'portal_type': 'collective.directory.category'}
+        if self._is_multilingual_site() is True:
+            path += (self.context.language, )
+            query_dict['path'] = {'query': '/'.join(path)}
         if navtree_props.enable_wf_state_filtering:
             query_dict['review_state'] = navtree_props.wf_states_to_show
 
