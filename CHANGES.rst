@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.4.1 (unreleased)
+0.4.1 (2015-03-17)
 ------------------
 
 - Fix last level menu vocabulary for multilingual websites : #10397
