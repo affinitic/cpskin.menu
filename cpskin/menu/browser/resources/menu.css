@@ -23,12 +23,12 @@
     text-decoration: underline;
 }
 
-.portal-globalnav-cpskinmenu a:hover,
+/*.portal-globalnav-cpskinmenu a:hover,
 .portal-globalnav-cpskinmenu-tabs a:hover
 {
     background: none repeat scroll 0 0 #205C90;
     color: #FFFFFF;
-}
+}*/
 
 .portal-globalnav-cpskinmenu-tabs
 {
