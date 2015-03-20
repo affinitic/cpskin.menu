@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-version = '0.4.1.dev0'
+version = '0.4.2.dev0'
 
 from setuptools import setup, find_packages
 
@@ -44,13 +44,14 @@ setup(name='cpskin.menu',
           'cpskin.theme',
           'collective.superfish',
           'z3c.jbot',
-          'affinitic.caching'
+          'affinitic.caching',
           # -*- Extra requirements: -*-
       ],
       extras_require={
           'test': [
               'Mock',
               'plone.api',
+              'plone.app.multilingual',
               'plone.app.robotframework',
               'plone.app.testing',
               'z3c.unconfigure',

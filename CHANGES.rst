@@ -1,10 +1,17 @@
 Changelog
 =========
 
-0.4.1 (unreleased)
+0.4.2 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+0.4.1 (2015-03-17)
+------------------
+
+- Fix last level menu vocabulary for multilingual websites : #10397
+  [mpeeters]
 
 
 0.4.0 (2015-03-05)
@@ -22,7 +29,7 @@ Changelog
 0.3.2 (2014-10-22)
 ------------------
 
-- Fix override zcml error. 
+- Fix override zcml error.
 
 
 0.3 (2014-10-07)
