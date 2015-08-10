@@ -3,7 +3,7 @@
   <version>1003</version>
   <dependencies>
     <dependency>profile-cpskin.menu:base</dependency>
-    <dependency>profile-cpskin.core:default</dependency>
+    <dependency>profile-cpskin.core:lite</dependency>
     <dependency>profile-cpskin.theme:default</dependency>
   </dependencies>
 </metadata>

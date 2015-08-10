@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <import-steps>
-  <import-step id="cpskin.menu.default"
+  <import-step id="cpskin.menu.base"
                handler="cpskin.menu.setuphandlers.installMenu"
                title="cpskin.menu: install import step">
   </import-step>

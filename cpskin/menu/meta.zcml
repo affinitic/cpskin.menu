@@ -14,10 +14,26 @@
            component=".cache.getPloneSiteMemcachedDefaultNameSpace"/>
 
   <genericsetup:registerProfile
+      name="base"
+      title="cpskin.menu: base"
+      directory="profiles/base"
+      description="Installs the cpskin.menu package (base)"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
       name="default"
       title="cpskin.menu"
       directory="profiles/default"
       description="Installs the cpskin.menu package"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      />
+
+  <genericsetup:registerProfile
+      name="lite"
+      title="cpskin.menu: lite"
+      directory="profiles/lite"
+      description="Installs the cpskin.menu package (lite)"
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
