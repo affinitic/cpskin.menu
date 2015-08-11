@@ -8,6 +8,12 @@ $( document ).ready(function() {
     $(clickable_menu_selector).each(function(){
         $(this).click(function() {
 
+            var menu_id = this.parentNode.id.replace('portaltab-', '');
+            var submenu = $('#portal-globalnav-cpskinmenu-' + menu_id);
+            if (submenu.length === 0) {
+                return true;
+            }
+
             $(clickable_menu_selector).each(function(){
                 $(this).removeClass('activated');
             });
@@ -16,8 +22,7 @@ $( document ).ready(function() {
             $('ul.sf-menu').each(function(){
                 $(this).hide();
             });
-            var menu_id = this.parentNode.id.replace('portaltab-', '');
-            jQuery('#portal-globalnav-cpskinmenu-' + menu_id).show();
+            submenu.show();
             return false;
         })
     });
